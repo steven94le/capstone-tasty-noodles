@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import GlobalStyles from "./GlobalStyles";
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
 import Recipe from "./pages/Recipe";
 
 const App = () => {
