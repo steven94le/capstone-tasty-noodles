@@ -5,7 +5,9 @@ export default createGlobalStyle`
     --font-heading: Esthetique, Helvetica, Arial, sans-serif;
     --font-body: Helvetica, Arial, sans-serif;
     --padding-page: 24px;
-    --border-radius: 10px;
+    --border-radius: 15px;
+    --yellow: #ffeb3b;
+    --off-white: #f5f5f5;
   }
 
   /* http://meyerweb.com/eric/tools/css/reset/
@@ -60,7 +62,6 @@ h3,
 label,
 button {
   font-family: var(--font-heading);
-  font-size: 14px;
   text-align: center;
 }
 
@@ -71,5 +72,15 @@ blockquote,
 input {
   font-family: var(--font-body);
 }
+
+/* clears the ‘X’ from Internet Explorer */
+input[type=search]::-ms-clear { display: none; width : 0; height: 0; }
+input[type=search]::-ms-reveal { display: none; width : 0; height: 0; }
+
+/* clears the ‘X’ from Chrome */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration { display: none; }
 
 `;
