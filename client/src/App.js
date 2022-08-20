@@ -12,28 +12,26 @@ import Recipe from "./pages/Recipe";
 const App = () => {
   return (
     <BrowserRouter>
-      <React.StrictMode>
-        <GlobalStyles />
-        <Header />
-        <NavBar />
-        <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route exact path="/recipe/:id">
-            <Recipe />
-          </Route>
-          <Route exact path="/blogs">
-            <Blogs />
-          </Route>
-          <Route exact path="/about">
-            <About />
-          </Route>
-          <Route exact path="/profile">
-            <Profile />
-          </Route>
-        </Switch>
-      </React.StrictMode>
+      <GlobalStyles />
+      <Header />
+      <NavBar />
+      <Switch>
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <Route exact path="/recipe/:id">
+          <Recipe />
+        </Route>
+        <Route exact path="/blogs">
+          <Blogs />
+        </Route>
+        <Route exact path="/about">
+          <About />
+        </Route>
+        <Route exact path="/profile">
+          <Profile />
+        </Route>
+      </Switch>
     </BrowserRouter>
   );
 };
