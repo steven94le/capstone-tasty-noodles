@@ -16,74 +16,70 @@ const RecipeCards = ({ filteredList }) => {
   return (
     <Wrapper>
       {filteredList.map((recipe) => (
-        <StyledLink to={`/recipe/${recipe.id}`} key={`${recipe.id}`}>
-          <Card>
-            <Thumbnail src={recipe.thumbnail} alt="thumbnail" />
-            <div>
-              <RecipeHeader>
-                <p>{recipe.name}</p>
-              </RecipeHeader>
-              <RecipeDescription>
-                {recipe.userRatings.score ? (
-                  recipe.userRatings.score >= 0.9 ? (
-                    <Rating>
-                      <span>
-                        Rating:{" "}
-                        {Math.round(recipe.userRatings.score * 100) + "%"}
-                      </span>
-                      <IoHappyOutline />
-                      <IoMedalOutline />
-                    </Rating>
-                  ) : (
-                    <Rating>
-                      <span>
-                        Rating:{" "}
-                        {Math.round(recipe.userRatings.score * 100) + "%"}
-                      </span>
-                    </Rating>
-                  )
+        <Card to={`/recipe/${recipe.id}`} key={`${recipe.id}`}>
+          <Thumbnail src={recipe.thumbnail} alt="thumbnail" />
+          <div>
+            <RecipeHeader>
+              <p>{recipe.name}</p>
+            </RecipeHeader>
+            <RecipeDescription>
+              {recipe.userRatings.score ? (
+                recipe.userRatings.score >= 0.9 ? (
+                  <Rating>
+                    <span>
+                      Rating: {Math.round(recipe.userRatings.score * 100) + "%"}
+                    </span>
+                    <IoHappyOutline />
+                    <IoMedalOutline />
+                  </Rating>
                 ) : (
                   <Rating>
-                    <span>Rating: N/A</span>
-                    <IoSadOutline />
+                    <span>
+                      Rating: {Math.round(recipe.userRatings.score * 100) + "%"}
+                    </span>
                   </Rating>
-                )}
-                <InfoGroup>
-                  <Info>
-                    <IoRestaurantOutline />
-                    {recipe.prepTimeMinutes ? (
-                      <p>Prep: {recipe.prepTimeMinutes} mins</p>
-                    ) : (
-                      <p>Prep: N/A</p>
-                    )}
-                  </Info>
-                  <Info>
-                    <IoTimerOutline />
-                    {recipe.prepTimeMinutes ? (
-                      <p>Cook: {recipe.cookTimeMinutes} mins</p>
-                    ) : (
-                      <p>Cook: N/A</p>
-                    )}
-                  </Info>
-                </InfoGroup>
-                <InfoGroup>
-                  <Info>
-                    <IoFastFoodOutline />
-                    {recipe.nutrition.calories ? (
-                      <p>{recipe.nutrition.calories} Calories</p>
-                    ) : (
-                      <p>N/A Calories</p>
-                    )}
-                  </Info>
-                  <Info>
-                    <IoList />
-                    <p>{recipe.ingredients.length} Ingredients</p>
-                  </Info>
-                </InfoGroup>
-              </RecipeDescription>
-            </div>
-          </Card>
-        </StyledLink>
+                )
+              ) : (
+                <Rating>
+                  <span>Rating: N/A</span>
+                  <IoSadOutline />
+                </Rating>
+              )}
+              <InfoGroup>
+                <Info>
+                  <IoRestaurantOutline />
+                  {recipe.prepTimeMinutes ? (
+                    <p>Prep: {recipe.prepTimeMinutes} mins</p>
+                  ) : (
+                    <p>Prep: N/A</p>
+                  )}
+                </Info>
+                <Info>
+                  <IoTimerOutline />
+                  {recipe.prepTimeMinutes ? (
+                    <p>Cook: {recipe.cookTimeMinutes} mins</p>
+                  ) : (
+                    <p>Cook: N/A</p>
+                  )}
+                </Info>
+              </InfoGroup>
+              <InfoGroup>
+                <Info>
+                  <IoFastFoodOutline />
+                  {recipe.nutrition.calories ? (
+                    <p>{recipe.nutrition.calories} Calories</p>
+                  ) : (
+                    <p>N/A Calories</p>
+                  )}
+                </Info>
+                <Info>
+                  <IoList />
+                  <p>{recipe.ingredients.length} Ingredients</p>
+                </Info>
+              </InfoGroup>
+            </RecipeDescription>
+          </div>
+        </Card>
       ))}
     </Wrapper>
   );
@@ -95,11 +91,8 @@ const Wrapper = styled.div`
   flex-wrap: wrap;
 `;
 
-const StyledLink = styled(Link)`
+const Card = styled(Link)`
   color: black;
-`;
-
-const Card = styled.div`
   display: flex;
   margin: 2rem;
   padding: 1rem;
@@ -114,6 +107,7 @@ const Card = styled.div`
     cursor: pointer;
     border: 0.5px solid lightgrey;
     transform: scale(1.1);
+    box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.5);
   }
 `;
 
