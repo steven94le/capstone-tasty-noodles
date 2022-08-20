@@ -14,6 +14,7 @@ export default createGlobalStyle`
       v2.0 | 20110126
       License: none (public domain)
   */
+      
 
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -43,6 +44,9 @@ export default createGlobalStyle`
   }
   body {
       line-height: 1;
+      height: 100%;
+  overflow: auto;
+  background-color: var(--yellow);
   }
   ol, ul {
       list-style: none;

@@ -5,27 +5,28 @@ import { NavLink } from "react-router-dom";
 const NavBar = () => {
   return (
     <Wrapper>
-      <StyledNavLink exact to="/">
-        <p>Recipes</p>
-      </StyledNavLink>
-      <StyledNavLink exact to="/blogs">
-        <p>Blogs</p>
-      </StyledNavLink>
-      <StyledNavLink exact to="/about">
-        <p>About</p>
-      </StyledNavLink>
-      <StyledNavLink exact to="/profile">
-        <p>Profile</p>
-      </StyledNavLink>
+      <StyledLinks>
+        <StyledNavLink exact to="/">
+          <p>Recipes</p>
+        </StyledNavLink>
+        <StyledNavLink exact to="/blogs">
+          <p>Blogs</p>
+        </StyledNavLink>
+        <StyledNavLink exact to="/about">
+          <p>About</p>
+        </StyledNavLink>
+        <StyledNavLink exact to="/profile">
+          <p>Profile</p>
+        </StyledNavLink>
+      </StyledLinks>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  gap: 2rem;
-  margin: 1rem;
 
   p {
     border: 1px solid black;
@@ -37,11 +38,21 @@ const Wrapper = styled.div`
   }
 `;
 
+const StyledLinks = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+`;
+
 const StyledNavLink = styled(NavLink)`
   color: black;
 
   &:hover {
-    opacity: 0.5;
+    background-color: black;
+    color: var(--yellow);
+    border-radius: var(--border-radius);
+    opacity: 0.9;
   }
 `;
 

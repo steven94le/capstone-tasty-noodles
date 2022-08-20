@@ -1,5 +1,7 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+import Header from "./components/Header";
+import NavBar from "./components/NavBar";
 import GlobalStyles from "./GlobalStyles";
 import About from "./pages/About";
 import Blogs from "./pages/Blogs";
@@ -12,6 +14,8 @@ const App = () => {
     <BrowserRouter>
       <React.StrictMode>
         <GlobalStyles />
+        <Header />
+        <NavBar />
         <Switch>
           <Route exact path="/">
             <Home />
