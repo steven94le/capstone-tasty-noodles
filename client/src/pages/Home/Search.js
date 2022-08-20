@@ -5,13 +5,19 @@ const Search = ({ recipeList, filteredList, setFilteredList }) => {
   const handleSearch = (e) => {
     e.preventDefault();
     const value = e.target.value.toLowerCase();
+    const keywords = value.split(" ").filter((keyword) => {
+      return keyword !== "";
+    });
     const filteredRecipes = recipeList.filter((recipe) => {
-      return recipe.name.toLowerCase().includes(value);
+      return keywords.every((keyword) => {
+        return recipe.name.toLowerCase().includes(keyword);
+      });
     });
     value === ""
       ? setFilteredList(recipeList)
       : setFilteredList(filteredRecipes);
   };
+
   return (
     <>
       <SearchBar>
