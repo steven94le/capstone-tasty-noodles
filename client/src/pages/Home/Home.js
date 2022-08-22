@@ -1,11 +1,70 @@
 import React, { useEffect, useState } from "react";
 import getRecipes from "../../api/getRecipes";
-import Search from "./Search";
+import Checkbox from "../../components/Checkbox";
+import Counter from "../../components/Counter";
+import Search from "../../components/Search";
 import RecipeCards from "./RecipeCards";
 
 const Home = () => {
   const [recipeList, setRecipeList] = useState([]);
+  const [checkFilters, setCheckFilters] = useState([]);
   const [filteredList, setFilteredList] = useState([]);
+
+  const handleSearch = (ev) => {
+    ev.preventDefault();
+    const value = ev.target.value.toLowerCase();
+
+    const searchKeys = value.split(" ").filter((searchKey) => {
+      return searchKey !== "";
+    });
+
+    const filteredRecipes = recipeList.filter((recipe) => {
+      return searchKeys.every((searchKey) => {
+        return recipe.name.toLowerCase().includes(searchKey);
+      });
+    });
+    value === ""
+      ? setFilteredList(recipeList)
+      : setFilteredList(filteredRecipes);
+  };
+
+  const handleToggle = (ev) => {
+    const value = ev.target.value;
+
+    const idx = checkFilters.indexOf(value);
+    const newFilters = [...checkFilters];
+
+    if (idx === -1) {
+      newFilters.push(value);
+    } else {
+      newFilters.splice(idx, 1);
+    }
+
+    setCheckFilters(newFilters);
+    handleCheckedFilters(newFilters);
+  };
+
+  const handleCheckedFilters = (filters) => {
+    const filteredRecipes = recipeList.filter((recipe) => {
+      return filters.every((filter) => {
+        const ingredientsArr = recipe.ingredients.map((ingredient) => {
+          return ingredient.Ingredient;
+        });
+
+        let ingredientsText = "";
+
+        ingredientsArr.forEach((ingredient) => {
+          ingredientsText = ingredientsText + " " + ingredient.toLowerCase();
+        });
+
+        return ingredientsText.includes(filter.toLowerCase());
+      });
+    });
+
+    filters.length === 0
+      ? setFilteredList(recipeList)
+      : setFilteredList(filteredRecipes);
+  };
 
   useEffect(() => {
     getRecipes().then((data) => {
@@ -16,11 +75,13 @@ const Home = () => {
 
   return (
     <>
-      <Search
-        recipeList={recipeList}
-        filteredList={filteredList}
-        setFilteredList={setFilteredList}
+      <Search handleSearch={handleSearch} />
+      <Checkbox
+        handleToggle={handleToggle}
+        checkFilters={checkFilters}
+        handleSearch={handleSearch}
       />
+      <Counter filteredList={filteredList} recipeList={recipeList} />
       <RecipeCards filteredList={filteredList} />
     </>
   );
