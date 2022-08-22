@@ -3,12 +3,14 @@ import getRecipes from "../../api/getRecipes";
 import Checkbox from "../../components/Checkbox";
 import Counter from "../../components/Counter";
 import Search from "../../components/Search";
+import Loader from "../Loader";
 import RecipeCards from "./RecipeCards";
 
 const Home = () => {
   const [recipeList, setRecipeList] = useState([]);
   const [checkFilters, setCheckFilters] = useState([]);
   const [filteredList, setFilteredList] = useState([]);
+  const [loadingStatus, setLoadingStatus] = useState("loading");
 
   const handleSearch = (ev) => {
     ev.preventDefault();
@@ -70,19 +72,26 @@ const Home = () => {
     getRecipes().then((data) => {
       setRecipeList(data);
       setFilteredList(data);
+      setTimeout(() => setLoadingStatus("loaded"), 1000);
     });
   }, []);
 
   return (
     <>
-      <Search handleSearch={handleSearch} />
-      <Checkbox
-        handleToggle={handleToggle}
-        checkFilters={checkFilters}
-        handleSearch={handleSearch}
-      />
-      <Counter filteredList={filteredList} recipeList={recipeList} />
-      <RecipeCards filteredList={filteredList} />
+      {loadingStatus === "loaded" ? (
+        <>
+          <Search handleSearch={handleSearch} />
+          <Checkbox
+            handleToggle={handleToggle}
+            checkFilters={checkFilters}
+            handleSearch={handleSearch}
+          />
+          <Counter filteredList={filteredList} recipeList={recipeList} />
+          <RecipeCards filteredList={filteredList} />
+        </>
+      ) : (
+        <Loader />
+      )}
     </>
   );
 };

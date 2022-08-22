@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import getRecipe from "../api/getRecipe";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import Loader from "./Loader";
 
 const Recipe = () => {
   const [recipe, setRecipe] = useState({});
   const { id } = useParams();
+  const [loadingStatus, setLoadingStatus] = useState("loading");
 
   useEffect(() => {
     let ignore = false;
@@ -13,6 +15,7 @@ const Recipe = () => {
     getRecipe(id).then((data) => {
       if (!ignore) {
         setRecipe(data);
+        setTimeout(() => setLoadingStatus("loaded"), 1000);
       }
     });
 
@@ -23,108 +26,116 @@ const Recipe = () => {
 
   console.log("recipe:", recipe);
   return (
-    <Wrapper>
-      <hr />
-      <RecipeName>{recipe.name}</RecipeName>
-      <Subinfo>
-        {recipe.description ? (
-          <>
-            <p>{recipe.description}</p>
-          </>
-        ) : (
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur.
-          </p>
-        )}
-      </Subinfo>
-      <hr />
-      <FirstRow>
-        <StyledImage src={recipe.thumbnail} alt="thumbnail" />
-        <Summary>
-          <SummaryTop>
-            <p>Score: {recipe.userRatings?.score}</p>
-            <p>Upvotes: {recipe.userRatings?.count_positive}</p>
-            <p>Downvotes: {recipe.userRatings?.count_negative}</p>
-            <p># of Servings: {recipe.numServings}</p>
-            <p>Prep Time: {recipe.prepTimeMinutes} mins</p>
-            <p>Cooking Time: {recipe.cookTimeMinutes} mins</p>
-          </SummaryTop>
-          <SummaryBottom>
-            <>
-              <p>Nutritional Information</p>
-              <p>Calories: {recipe.nutrition.calories}</p>
-              <p>Carbohydrates: {recipe.nutrition.carbohydrates}g</p>
-              <p>Fat: {recipe.nutrition.fat}g</p>
-              <p>Protein: {recipe.nutrition.protein}g</p>
-              <p>Fiber: {recipe.nutrition.fiber}g</p>
-              <p>Sugar: {recipe.nutrition.sugar}g</p>
-            </>
-          </SummaryBottom>
-        </Summary>
-      </FirstRow>
-      <SecondRow>
-        <Ingredients>
-          <h1>Ingredients</h1>
-          <ul>
-            {recipe.ingredients?.map((ingredient, index) => (
-              <li key={`${ingredient}-${index}`}>{ingredient.Ingredient}</li>
-            ))}
-          </ul>
-        </Ingredients>
-        <Instructions>
-          <h1>Instructions</h1>
-          <ol>
-            {recipe.instructions?.map((instruction, index) => (
-              <li key={`${instruction}-${index}`}>{instruction.Step}</li>
-            ))}
-          </ol>
-        </Instructions>
-      </SecondRow>
-      <hr />
-      <RecipeName>Gallery</RecipeName>
-      <ThirdRow>
-        <StyledImage
-          src={recipe.thumbnail}
-          alt="thumbnail"
-          style={{ transform: "scaleX(-1)", opacity: "0.8" }}
-        />
-        <StyledImage
-          src={recipe.thumbnail}
-          alt="thumbnail"
-          style={{ transform: "scaleX(-1)", opacity: "0.8" }}
-        />
-        <StyledImage
-          src={recipe.thumbnail}
-          alt="thumbnail"
-          style={{ transform: "scaleX(-1)", opacity: "0.8" }}
-        />
-      </ThirdRow>
-      <hr />
-      <RecipeName>Check Out Similar Recipes</RecipeName>
+    <>
+      {loadingStatus === "loaded" ? (
+        <Wrapper>
+          <hr />
+          <RecipeName>{recipe.name}</RecipeName>
+          <Subinfo>
+            {recipe.description ? (
+              <>
+                <p>{recipe.description}</p>
+              </>
+            ) : (
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                nulla pariatur.
+              </p>
+            )}
+          </Subinfo>
+          <hr />
+          <FirstRow>
+            <StyledImage src={recipe.thumbnail} alt="thumbnail" />
+            <Summary>
+              <SummaryTop>
+                <p>Score: {recipe.userRatings?.score}</p>
+                <p>Upvotes: {recipe.userRatings?.count_positive}</p>
+                <p>Downvotes: {recipe.userRatings?.count_negative}</p>
+                <p># of Servings: {recipe.numServings}</p>
+                <p>Prep Time: {recipe.prepTimeMinutes} mins</p>
+                <p>Cooking Time: {recipe.cookTimeMinutes} mins</p>
+              </SummaryTop>
+              <SummaryBottom>
+                <>
+                  <p>Nutritional Information</p>
+                  <p>Calories: {recipe.nutrition?.calories}</p>
+                  <p>Carbohydrates: {recipe.nutrition?.carbohydrates}g</p>
+                  <p>Fat: {recipe.nutrition?.fat}g</p>
+                  <p>Protein: {recipe.nutrition?.protein}g</p>
+                  <p>Fiber: {recipe.nutrition?.fiber}g</p>
+                  <p>Sugar: {recipe.nutrition?.sugar}g</p>
+                </>
+              </SummaryBottom>
+            </Summary>
+          </FirstRow>
+          <SecondRow>
+            <Ingredients>
+              <h1>Ingredients</h1>
+              <ul>
+                {recipe.ingredients?.map((ingredient, index) => (
+                  <li key={`${ingredient}-${index}`}>
+                    {ingredient.Ingredient}
+                  </li>
+                ))}
+              </ul>
+            </Ingredients>
+            <Instructions>
+              <h1>Instructions</h1>
+              <ol>
+                {recipe.instructions?.map((instruction, index) => (
+                  <li key={`${instruction}-${index}`}>{instruction.Step}</li>
+                ))}
+              </ol>
+            </Instructions>
+          </SecondRow>
+          <hr />
+          <RecipeName>Gallery</RecipeName>
+          <ThirdRow>
+            <StyledImage
+              src={recipe.thumbnail}
+              alt="thumbnail"
+              style={{ transform: "scaleX(-1)", opacity: "0.8" }}
+            />
+            <StyledImage
+              src={recipe.thumbnail}
+              alt="thumbnail"
+              style={{ transform: "scaleX(-1)", opacity: "0.8" }}
+            />
+            <StyledImage
+              src={recipe.thumbnail}
+              alt="thumbnail"
+              style={{ transform: "scaleX(-1)", opacity: "0.8" }}
+            />
+          </ThirdRow>
+          <hr />
+          <RecipeName>Check Out Similar Recipes</RecipeName>
 
-      <FourthRow>
-        <StyledImage
-          src={recipe.thumbnail}
-          alt="thumbnail"
-          style={{ transform: "scaleX(-1)" }}
-        />
-        <StyledImage
-          src={recipe.thumbnail}
-          alt="thumbnail"
-          style={{ transform: "scaleX(-1)" }}
-        />
-        <StyledImage
-          src={recipe.thumbnail}
-          alt="thumbnail"
-          style={{ transform: "scaleX(-1)" }}
-        />
-      </FourthRow>
-    </Wrapper>
+          <FourthRow>
+            <StyledImage
+              src={recipe.thumbnail}
+              alt="thumbnail"
+              style={{ transform: "scaleX(-1)" }}
+            />
+            <StyledImage
+              src={recipe.thumbnail}
+              alt="thumbnail"
+              style={{ transform: "scaleX(-1)" }}
+            />
+            <StyledImage
+              src={recipe.thumbnail}
+              alt="thumbnail"
+              style={{ transform: "scaleX(-1)" }}
+            />
+          </FourthRow>
+        </Wrapper>
+      ) : (
+        <Loader />
+      )}
+    </>
   );
 };
 
@@ -140,7 +151,7 @@ const Wrapper = styled.div`
 `;
 
 const RecipeName = styled.h1`
-  padding: 1rem 0;
+  padding-bottom: 0.5rem;
   font-size: 24px;
 `;
 
