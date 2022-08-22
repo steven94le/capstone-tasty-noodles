@@ -1,35 +1,32 @@
 import React from "react";
 import styled from "styled-components";
 
-const labels = [
-  "Chicken",
-  "Pork",
-  "Beef",
-  "Tofu",
-  "Shrimp",
-  "Egg",
-  "Green Onions",
-  "Garlic",
-  "Mushroom",
-  "Ginger",
-  "Corn",
-  "Sesame",
-  "Carrot",
-];
+const labels = {
+  Protein: ["Chicken", "Pork", "Beef", "Tofu", "Shrimp", "Egg"],
+  Toppings: ["Green Onions", "Garlic", "Mushroom", "Ginger", "Corn", "Carrot"],
+  Sauces: ["Soy Sauce", "Fish Sauce"],
+};
+
+const labelKeys = Object.keys(labels);
 
 const Checkbox = ({ handleToggle, checkFilters }) => {
   return (
     <Wrapper>
-      {labels.map((label, index) => (
-        <Option key={`${label}-${index + 1}`}>
-          <input
-            type="checkbox"
-            name={label}
-            value={label}
-            onChange={handleToggle}
-            checked={checkFilters.indexOf(label) === -1 ? false : true}
-          />
-          <label htmlFor={label}>{label}</label>
+      {labelKeys.map((labelKey, index) => (
+        <Option key={`${labelKey}-${index + 1}`}>
+          <div>{labelKey}</div>
+          {labels[labelKey].map((ingredient, index) => (
+            <div key={`${ingredient}-${index + 1}`}>
+              <input
+                type="checkbox"
+                id={ingredient}
+                value={ingredient}
+                onChange={handleToggle}
+                checked={checkFilters.indexOf(ingredient) === -1 ? false : true}
+              />
+              <label htmlFor={ingredient}>{ingredient}</label>
+            </div>
+          ))}
         </Option>
       ))}
     </Wrapper>
@@ -38,8 +35,8 @@ const Checkbox = ({ handleToggle, checkFilters }) => {
 
 const Wrapper = styled.div`
   display: flex;
-  justify-content: center;
-  align-content: center;
+  flex-direction: column;
+  align-items: center;
 
   div {
     padding: 0.25rem;
