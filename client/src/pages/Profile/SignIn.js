@@ -10,8 +10,10 @@ const defaultLoginFields = {
 const SignIn = () => {
   const [loginFields, setLoginFields] = useState(defaultLoginFields);
   const { email, password } = loginFields;
-  const { currentUser, setCurrentUser, error, setError } =
+  const { setCurrentUser, error, setError, errorMessage, setErrorMessage } =
     useContext(UserContext);
+
+  const userEmail = email.toLowerCase();
 
   const resetLoginFields = () => {
     setLoginFields(defaultLoginFields);
@@ -31,7 +33,7 @@ const SignIn = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: email.toLowerCase(),
+        email: userEmail,
         password,
       }),
     });
@@ -40,11 +42,14 @@ const SignIn = () => {
     const userData = data.data;
 
     if (!userData) {
-      setCurrentUser(data.message);
-      return setError(true);
+      setError(true);
+      setErrorMessage(data.message);
+      return;
     } else {
-      setCurrentUser(userData);
+      setError(false);
       resetLoginFields();
+      setErrorMessage(data.message);
+      setCurrentUser(userData);
     }
   };
 
@@ -69,7 +74,7 @@ const SignIn = () => {
           required
         />
         <button type="submit">Log in</button>
-        {error && <p>{currentUser}</p>}
+        {error ? <p>{errorMessage}</p> : <p>{errorMessage}</p>}
       </StyledForm>
     </Wrapper>
   );
@@ -91,6 +96,7 @@ const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  width: 100%;
 `;
 
 export default SignIn;

@@ -5,6 +5,7 @@ export const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState({});
   const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   return (
     <UserContext.Provider
@@ -13,6 +14,8 @@ export const UserProvider = ({ children }) => {
         setCurrentUser,
         error,
         setError,
+        errorMessage,
+        setErrorMessage,
       }}
     >
       {children}
