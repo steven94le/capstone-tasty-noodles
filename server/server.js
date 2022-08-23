@@ -3,7 +3,11 @@
 const express = require("express");
 const morgan = require("morgan");
 
-const { handleGetRecipes, handleGetRecipe } = require("./handlers/handlers");
+const {
+  handleGetRecipes,
+  handleGetRecipe,
+  verifyUser,
+} = require("./handlers/handlers");
 
 const PORT = 8000;
 
@@ -30,6 +34,7 @@ express()
 
   .get("/recipes", handleGetRecipes)
   .get("/recipe/:id", handleGetRecipe)
+  .post("/users", verifyUser)
 
   // catch all endpoint.
   .get("*", (req, res) => {

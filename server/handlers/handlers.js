@@ -1,4 +1,4 @@
-const { getRecipes, getRecipe, sendResponse } = require("./utils.js");
+const { getRecipes, getRecipe, findUser, sendResponse } = require("./utils.js");
 
 /**
  * handler to get all the noodle recipes
@@ -43,7 +43,30 @@ const handleGetRecipe = async (req, res) => {
   }
 };
 
+/**
+ * handler to verify if user exists when user attempts to sign in
+ * @param {*} req - with body of log in data: `email`, `password`
+ * @param {*} res
+ * @return user verification
+ */
+const verifyUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const foundUser = await findUser(email, password);
+
+    if (foundUser) {
+      sendResponse(res, 200, foundUser, "User verified.");
+    } else {
+      sendResponse(res, 200, foundUser, "Please check your email or password.");
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   handleGetRecipes,
   handleGetRecipe,
+  verifyUser,
 };
