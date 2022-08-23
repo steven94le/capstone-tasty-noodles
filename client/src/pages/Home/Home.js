@@ -49,11 +49,11 @@ const Home = () => {
   const handleCheckedFilters = (filters) => {
     const filteredRecipes = recipeList.filter((recipe) => {
       return filters.every((filter) => {
+        let ingredientsText = "";
+
         const ingredientsArr = recipe.ingredients.map((ingredient) => {
           return ingredient.Ingredient;
         });
-
-        let ingredientsText = "";
 
         ingredientsArr.forEach((ingredient) => {
           ingredientsText = ingredientsText + " " + ingredient.toLowerCase();
@@ -81,11 +81,7 @@ const Home = () => {
       {loadingStatus === "loaded" ? (
         <>
           <Search handleSearch={handleSearch} />
-          <Checkbox
-            handleToggle={handleToggle}
-            checkFilters={checkFilters}
-            handleSearch={handleSearch}
-          />
+          <Checkbox handleToggle={handleToggle} checkFilters={checkFilters} />
           <Counter filteredList={filteredList} recipeList={recipeList} />
           <RecipeCards filteredList={filteredList} />
         </>

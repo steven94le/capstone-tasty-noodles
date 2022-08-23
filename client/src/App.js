@@ -6,7 +6,7 @@ import GlobalStyles from "./GlobalStyles";
 import About from "./pages/About";
 import Blogs from "./pages/Blogs";
 import Home from "./pages/Home/Home";
-import Profile from "./pages/Profile";
+import Profile from "./pages/Profile/Profile";
 import Recipe from "./pages/Recipe";
 
 const App = () => {
