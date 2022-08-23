@@ -1,4 +1,12 @@
-const { getRecipes, getRecipe, findUser, sendResponse } = require("./utils.js");
+const { v4: uuidv4 } = require("uuid");
+const {
+  getRecipes,
+  getRecipe,
+  findUser,
+  getUsers,
+  addUserDetails,
+  sendResponse,
+} = require("./utils.js");
 
 /**
  * handler to get all the noodle recipes
@@ -65,8 +73,46 @@ const verifyUser = async (req, res) => {
   }
 };
 
+/**
+ * handler to create new user when a user signs up for the first time
+ * @param {*} req - with body of registration data: `email`, `password`
+ * @param {*} res
+ * @returns new user
+ */
+const addNewUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const newUserDetails = {
+      _id: uuidv4(),
+      email,
+      password,
+    };
+
+    const users = await getUsers();
+    const foundUser = users.find((user) => user.email === email);
+
+    if (foundUser) {
+      sendResponse(res, 404, null, "User email already exists.");
+      return;
+    } else {
+      await addUserDetails(newUserDetails);
+    }
+
+    sendResponse(
+      res,
+      201,
+      newUserDetails,
+      "User has been registered successfully."
+    );
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   handleGetRecipes,
   handleGetRecipe,
   verifyUser,
+  addNewUser,
 };

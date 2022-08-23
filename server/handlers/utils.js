@@ -52,6 +52,30 @@ const findUser = async (email, password) => {
   }
 };
 
+const getUsers = async () => {
+  try {
+    const client = await startClient();
+    const db = client.db("tasty-noodles");
+    const users = await db.collection("users").find().toArray();
+    client.close();
+    return users;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const addUserDetails = async (newUserDetails) => {
+  try {
+    const client = await startClient();
+    const db = client.db("tasty-noodles");
+    await db.collection("users").insertOne(newUserDetails);
+    client.close();
+    return;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const sendResponse = (res, status, data, message = "No message included") => {
   res.status(status).json({ status, data, message });
 };
@@ -60,5 +84,7 @@ module.exports = {
   getRecipes,
   getRecipe,
   findUser,
+  getUsers,
+  addUserDetails,
   sendResponse,
 };

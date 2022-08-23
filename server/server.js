@@ -7,6 +7,7 @@ const {
   handleGetRecipes,
   handleGetRecipe,
   verifyUser,
+  addNewUser,
 } = require("./handlers/handlers");
 
 const PORT = 8000;
@@ -35,6 +36,7 @@ express()
   .get("/recipes", handleGetRecipes)
   .get("/recipe/:id", handleGetRecipe)
   .post("/users", verifyUser)
+  .post("/add-user", addNewUser)
 
   // catch all endpoint.
   .get("*", (req, res) => {
