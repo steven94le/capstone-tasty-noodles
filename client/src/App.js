@@ -7,7 +7,7 @@ import About from "./pages/About";
 import Blogs from "./pages/Blogs";
 import Home from "./pages/Home/Home";
 import Profile from "./pages/Profile/Profile";
-import Recipe from "./pages/Recipe";
+import Recipe from "./pages/Recipe/Recipe";
 
 const App = () => {
   return (

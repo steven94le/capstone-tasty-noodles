@@ -80,7 +80,7 @@ const Home = () => {
     <>
       {loadingStatus === "loaded" ? (
         <>
-          <Search handleSearch={handleSearch} />
+          <Search handleSearch={handleSearch} recipeList={recipeList} />
           <Checkbox handleToggle={handleToggle} checkFilters={checkFilters} />
           <Counter filteredList={filteredList} recipeList={recipeList} />
           <RecipeCards filteredList={filteredList} />
