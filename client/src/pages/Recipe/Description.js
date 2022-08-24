@@ -4,7 +4,6 @@ import styled from "styled-components";
 const Description = ({ recipe }) => {
   return (
     <div>
-      <StyledHeader>{recipe.name}</StyledHeader>
       <RecipeInfo>
         {recipe.description ? (
           <>
@@ -25,11 +24,6 @@ const Description = ({ recipe }) => {
     </div>
   );
 };
-
-const StyledHeader = styled.h1`
-  padding-bottom: 0.5rem;
-  font-size: 24px;
-`;
 
 const RecipeInfo = styled.div`
   display: flex;

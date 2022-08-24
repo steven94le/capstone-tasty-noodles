@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
+import { UserContext } from "../provider/UserProvider";
 
 const NavBar = () => {
+  const { currentUser, setCurrentUser } = useContext(UserContext);
+
   return (
     <Wrapper>
       <StyledLinks>
@@ -18,6 +21,11 @@ const NavBar = () => {
         <StyledNavLink exact to="/profile">
           <p>Profile</p>
         </StyledNavLink>
+        {currentUser.email && (
+          <StyledLogOut onClick={() => setCurrentUser({})}>
+            Log Out
+          </StyledLogOut>
+        )}
       </StyledLinks>
     </Wrapper>
   );
@@ -53,6 +61,23 @@ const StyledNavLink = styled(NavLink)`
     color: var(--yellow);
     border-radius: var(--border-radius);
     opacity: 0.9;
+  }
+`;
+const StyledLogOut = styled.button`
+  border: 1px solid black;
+  border-radius: var(--border-radius);
+  width: 100px;
+  height: 25px;
+  font-size: 22px;
+  background-color: transparent;
+  padding: 0;
+
+  &:hover {
+    background-color: black;
+    color: var(--yellow);
+    border-radius: var(--border-radius);
+    opacity: 0.9;
+    cursor: pointer;
   }
 `;
 

@@ -6,12 +6,12 @@ const SummaryData = ({ recipe }) => {
     <Wrapper>
       <Row>
         <>
-          {recipe.prepTimeMinutes === undefined ? (
+          {recipe.prepTimeMinutes === null ? (
             <p>PREP: N/A</p>
           ) : (
             <p>PREP: {recipe.prepTimeMinutes} MINS</p>
           )}
-          {recipe.cookTimeMinutes === undefined ? (
+          {recipe.cookTimeMinutes === null ? (
             <p>COOK: N/A</p>
           ) : (
             <p>COOK: {recipe.cookTimeMinutes} MINS</p>

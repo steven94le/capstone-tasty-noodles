@@ -87,8 +87,9 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
 
 input[type="checkbox"] {
   margin: 0;
-  width: 1.25em;
-  height: 1.25em;
+  width: 1.2em;
+  height: 1.2em;
+  background: red;
 
   &:hover {
     cursor: pointer;

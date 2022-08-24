@@ -22,12 +22,6 @@ const Wrapper = styled.div`
   border-radius: var(--border-radius);
   padding: 0.5rem;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
-
-  > p,
-  li {
-    list-style-type: decimal;
-    margin: 0.5rem;
-  }
 `;
 
 const List = styled.ol`
@@ -35,6 +29,12 @@ const List = styled.ol`
   flex-direction: column;
   justify-content: flex-start;
   padding: 15px;
+
+  > p,
+  li {
+    list-style-type: decimal;
+    margin: 0.5rem;
+  }
 `;
 
 export default Instructions;
