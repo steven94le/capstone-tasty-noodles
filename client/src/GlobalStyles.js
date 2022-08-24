@@ -46,7 +46,8 @@ export default createGlobalStyle`
       line-height: 1;
       height: 100%;
   overflow: auto;
-  background-color: var(--yellow);
+ background: linear-gradient(90deg, rgba(255,221,0,1) 0%, rgba(251,176,52,1) 100%);
+ 
   }
   ol, ul {
       list-style: none;

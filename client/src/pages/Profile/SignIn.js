@@ -55,7 +55,7 @@ const SignIn = () => {
 
   return (
     <Wrapper>
-      <p>Already have an account?</p>
+      <StyledHeader>Already have an account?</StyledHeader>
       <StyledForm onSubmit={handleSubmit}>
         <label>Email</label>
         <input
@@ -73,8 +73,12 @@ const SignIn = () => {
           onChange={handleChange}
           required
         />
-        <button type="submit">Log in</button>
-        {error ? <p>{errorMessage}</p> : <p>{errorMessage}</p>}
+        <button type="submit">Log In</button>
+        {error ? (
+          <ErrorMsg>{errorMessage}</ErrorMsg>
+        ) : (
+          <SuccessMsg>{errorMessage}</SuccessMsg>
+        )}
       </StyledForm>
     </Wrapper>
   );
@@ -90,13 +94,60 @@ const Wrapper = styled.div`
   width: 30vw;
   background-color: var(--off-white);
   border-radius: var(--border-radius);
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+`;
+
+const StyledHeader = styled.h1`
+  font-size: 18px;
 `;
 
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.85rem;
   width: 100%;
+
+  input {
+    border-radius: 5px;
+    padding: 0.5rem;
+    border: none;
+    outline: none;
+    border: 1px solid lightgrey;
+  }
+
+  input:focus {
+    box-shadow: 0 0 3px 1px grey;
+  }
+
+  button {
+    margin-top: 0.5rem;
+    padding: 0.75em;
+    color: white;
+    background-color: blue;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  button:hover,
+  button:focus {
+    background-color: lightblue;
+    transition: 150ms ease-in-out;
+  }
+`;
+
+const Message = styled.p`
+  margin-top: -15px;
+  text-align: center;
+`;
+const ErrorMsg = styled(Message)`
+  color: red;
+`;
+
+const SuccessMsg = styled(Message)`
+  color: green;
 `;
 
 export default SignIn;
