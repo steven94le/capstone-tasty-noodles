@@ -14,7 +14,6 @@ const Counter = ({ filteredList, recipeList }) => {
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;
-  margin: 0.25rem;
 `;
 
 export default Counter;

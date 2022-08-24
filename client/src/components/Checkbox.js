@@ -36,7 +36,7 @@ const Checkbox = ({ handleToggle, checkFilters }) => {
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;
-  margin: 10px 0 10px 0;
+  margin: 10px 0 25px 0;
 
   div {
     padding: 0.25rem;
@@ -48,9 +48,13 @@ const Option = styled.div`
   border-radius: 10px;
   font-size: 16px;
   font-family: var(--font-body);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 150px;
 
   label {
-    padding-left: 0.2rem;
+    padding-left: 0.5rem;
   }
 `;
 
