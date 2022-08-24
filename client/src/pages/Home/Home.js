@@ -3,7 +3,7 @@ import getRecipes from "../../api/getRecipes";
 import Checkbox from "../../components/Checkbox";
 import Counter from "../../components/Counter";
 import Search from "../../components/Search";
-import Loader from "../Loader";
+import Loader from "../../components/Loader";
 import RecipeCards from "./RecipeCards";
 
 const Home = () => {

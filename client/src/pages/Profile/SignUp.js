@@ -138,7 +138,7 @@ const StyledForm = styled.form`
     margin-top: 0.5rem;
     padding: 0.75em;
     color: white;
-    background-color: blue;
+    background-color: var(--blue);
     border: none;
     outline: none;
     border-radius: 5px;

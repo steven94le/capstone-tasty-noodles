@@ -7,6 +7,7 @@ export default createGlobalStyle`
     --padding-page: 24px;
     --border-radius: 15px;
     --yellow: #ffeb3b;
+    --blue: #007fff;
     --off-white: #f5f5f5;
   }
 
