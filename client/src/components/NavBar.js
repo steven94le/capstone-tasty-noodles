@@ -7,6 +7,7 @@ import LoginButton from "./LoginButton";
 
 const NavBar = () => {
   const { user } = useAuth0();
+  const id = user?.nickname;
 
   return (
     <Wrapper>
@@ -22,7 +23,7 @@ const NavBar = () => {
         </StyledNavLink>
         {user ? (
           <>
-            <StyledNavLink exact to="/profile">
+            <StyledNavLink exact to={`/profile/${id}`}>
               <p>Profile</p>
             </StyledNavLink>
             <LogoutButton />
