@@ -40,13 +40,56 @@ const getRecipe = async (id) => {
   }
 };
 
-const findUser = async (email, password) => {
+const saveRecipe = async (email, recipeId, name, thumbnail) => {
   try {
     const client = await startClient();
     const db = client.db("tasty-noodles");
-    const foundUser = await db.collection("users").findOne({ email, password });
+    await db
+      .collection("users")
+      .updateOne(
+        { email },
+        { $addToSet: { savedRecipes: { recipeId, name, thumbnail } } }
+      );
+    client.close();
+    return;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const deleteSavedRecipe = async (email, updatedSavedRecipes) => {
+  try {
+    const client = await startClient();
+    const db = client.db("tasty-noodles");
+    await db
+      .collection("users")
+      .updateOne({ email }, { $set: { savedRecipes: updatedSavedRecipes } });
+    client.close();
+    return;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const findUser = async (email) => {
+  try {
+    const client = await startClient();
+    const db = client.db("tasty-noodles");
+    const foundUser = await db.collection("users").findOne({ email });
     client.close();
     return foundUser;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const getUser = async (email) => {
+  try {
+    const client = await startClient();
+    const db = client.db("tasty-noodles");
+    const user = await db.collection("users").findOne({ email });
+    client.close();
+    return user;
   } catch (err) {
     console.log(err);
   }
@@ -64,18 +107,6 @@ const getUsers = async () => {
   }
 };
 
-const addUserDetails = async (newUserDetails) => {
-  try {
-    const client = await startClient();
-    const db = client.db("tasty-noodles");
-    await db.collection("users").insertOne(newUserDetails);
-    client.close();
-    return;
-  } catch (err) {
-    console.log(err);
-  }
-};
-
 const sendResponse = (res, status, data, message = "No message included") => {
   res.status(status).json({ status, data, message });
 };
@@ -84,7 +115,9 @@ module.exports = {
   getRecipes,
   getRecipe,
   findUser,
+  getUser,
   getUsers,
-  addUserDetails,
+  saveRecipe,
+  deleteSavedRecipe,
   sendResponse,
 };

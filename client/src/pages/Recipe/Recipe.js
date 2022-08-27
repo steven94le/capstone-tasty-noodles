@@ -14,13 +14,31 @@ const Recipe = () => {
   const { id } = useParams();
   const [loadingStatus, setLoadingStatus] = useState("loading");
   const { user } = useAuth0();
+  const [saveRecipeMsg, setSaveRecipeMsg] = useState("");
 
-  const handleSaveRecipe = (e) => {
+  const handleSaveRecipe = async (e) => {
     e.preventDefault();
-    if (user) {
-      console.log("user is signed in");
+
+    const response = await fetch("/save-recipe", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: user.email.toLowerCase(),
+        recipeId: id,
+        name: recipe.name,
+        thumbnail: recipe.thumbnail,
+      }),
+    });
+
+    const data = await response.json();
+    const recipeSaved = data.data;
+
+    if (!recipeSaved) {
+      setSaveRecipeMsg(data.message);
     } else {
-      alert("Please sign in to save recipes");
+      setSaveRecipeMsg(data.message);
     }
   };
 
@@ -46,6 +64,7 @@ const Recipe = () => {
           <StyledHeader>
             <RecipeName>{recipe.name}</RecipeName>
             <SaveButton onClick={handleSaveRecipe}>Save Recipe</SaveButton>
+            {saveRecipeMsg}
           </StyledHeader>
           <Description recipe={recipe} />
           <hr />

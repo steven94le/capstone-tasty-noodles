@@ -1,10 +1,12 @@
-const { v4: uuidv4 } = require("uuid");
+// const { v4: uuidv4 } = require("uuid");
 const {
   getRecipes,
   getRecipe,
+  saveRecipe,
+  deleteSavedRecipe,
   findUser,
+  getUser,
   getUsers,
-  addUserDetails,
   sendResponse,
 } = require("./utils.js");
 
@@ -52,21 +54,22 @@ const handleGetRecipe = async (req, res) => {
 };
 
 /**
- * handler to verify if user exists when user attempts to sign in
- * @param {*} req - with body of log in data: `email`, `password`
+ * handler to save recipeId into a logged-in user's profile
+ * @param {*} req - with body of log in data: `email`, `recipeId`
  * @param {*} res
- * @return user verification
+ * @return saved recipe
  */
-const verifyUser = async (req, res) => {
-  const { email, password } = req.body;
+const handleSaveRecipe = async (req, res) => {
+  const { email, recipeId, name, thumbnail } = req.body;
 
   try {
-    const foundUser = await findUser(email, password);
+    const user = await findUser(email);
 
-    if (foundUser) {
-      sendResponse(res, 200, foundUser, "User verified.");
+    if (!user) {
+      sendResponse(res, 404, user, "User not found.");
     } else {
-      sendResponse(res, 200, foundUser, "Please check your email or password.");
+      const recipeSaved = await saveRecipe(email, recipeId, name, thumbnail);
+      sendResponse(res, 200, recipeSaved, "Recipe saved!");
     }
   } catch (err) {
     console.log(err);
@@ -74,37 +77,71 @@ const verifyUser = async (req, res) => {
 };
 
 /**
- * handler to create new user when a user signs up for the first time
- * @param {*} req - with body of registration data: `email`, `password`
+ * handler to delete a saved recipe from user's profile page
+ * @param {*} req - with body of log in data: `email`, `recipeId`
  * @param {*} res
- * @returns new user
+ * @return saved recipe deleted
  */
-const addNewUser = async (req, res) => {
-  const { email, password } = req.body;
+const handleDeleteSavedRecipe = async (req, res) => {
+  const { email, deletedRecipeId } = req.body;
 
   try {
-    const newUserDetails = {
-      _id: uuidv4(),
-      email,
-      password,
-    };
+    const user = await getUser(email);
 
-    const users = await getUsers();
-    const foundUser = users.find((user) => user.email === email);
+    const { savedRecipes } = user;
 
-    if (foundUser) {
-      sendResponse(res, 404, null, "User email already exists.");
-      return;
-    } else {
-      await addUserDetails(newUserDetails);
+    const recipeIds = savedRecipes.map((savedRecipe) => {
+      return savedRecipe.recipeId;
+    });
+
+    if (!recipeIds.includes(deletedRecipeId)) {
+      sendResponse(res, 404, null, "Recipe not found!");
     }
 
-    sendResponse(
-      res,
-      201,
-      newUserDetails,
-      "User has been registered successfully."
-    );
+    const updatedSavedRecipes = savedRecipes.filter((savedRecipes) => {
+      return savedRecipes.recipeId !== deletedRecipeId;
+    });
+
+    const recipeDeleted = await deleteSavedRecipe(email, updatedSavedRecipes);
+    sendResponse(res, 200, recipeDeleted, "Recipe deleted!");
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+/**
+ * handler to get user information
+ * @param {*} req
+ * @param {*} res
+ * @return {} {res, 200, users, "User fetch successful"}
+ */
+const handleGetUser = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const userFound = await findUser(id);
+
+    if (!userFound) {
+      sendResponse(res, 404, user, "User not found.");
+    } else {
+      const user = await getUser(id);
+      sendResponse(res, 200, user, "Users fetch successful");
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+/**
+ * handler to get all users
+ * @param {*} req
+ * @param {*} res
+ * @return {} {res, 200, users, "Users fetch successful"}
+ */
+const handleGetUsers = async (req, res) => {
+  try {
+    const users = await getUsers();
+    sendResponse(res, 200, users, "Users fetch successful");
   } catch (err) {
     console.log(err);
   }
@@ -113,6 +150,8 @@ const addNewUser = async (req, res) => {
 module.exports = {
   handleGetRecipes,
   handleGetRecipe,
-  verifyUser,
-  addNewUser,
+  handleSaveRecipe,
+  handleDeleteSavedRecipe,
+  handleGetUser,
+  handleGetUsers,
 };

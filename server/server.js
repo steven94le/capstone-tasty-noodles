@@ -6,8 +6,10 @@ const morgan = require("morgan");
 const {
   handleGetRecipes,
   handleGetRecipe,
-  verifyUser,
-  addNewUser,
+  handleSaveRecipe,
+  handleDeleteSavedRecipe,
+  handleGetUser,
+  handleGetUsers,
 } = require("./handlers/handlers");
 
 const PORT = 8000;
@@ -35,8 +37,11 @@ express()
 
   .get("/recipes", handleGetRecipes)
   .get("/recipe/:id", handleGetRecipe)
-  .post("/users", verifyUser)
-  .post("/add-user", addNewUser)
+  .get("/profiles", handleGetUsers)
+  .get("/profile/:id", handleGetUser)
+
+  .post("/save-recipe", handleSaveRecipe)
+  .delete("/delete-saved-recipe", handleDeleteSavedRecipe)
 
   // catch all endpoint.
   .get("*", (req, res) => {
