@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import getRecipes from "../../api/getRecipes";
 import Checkbox from "../../components/Checkbox";
 import Counter from "../../components/Counter";
@@ -8,9 +8,10 @@ import RecipeCards from "./RecipeCards";
 import { useToggle } from "../../components/hooks/Hooks";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { RecipeListContext } from "../../components/provider/RecipeListContext";
 
 const Home = () => {
-  const [recipeList, setRecipeList] = useState([]);
+  const { recipeList, setRecipeList } = useContext(RecipeListContext);
   const [checkFilters, setCheckFilters] = useState([]);
   const [filteredList, setFilteredList] = useState([]);
   const [loadingStatus, setLoadingStatus] = useState("loading");
@@ -83,7 +84,7 @@ const Home = () => {
       setFilteredList(data);
       setTimeout(() => setLoadingStatus("loaded"), 1000);
     });
-  }, []);
+  }, [setRecipeList]);
 
   return (
     <>
