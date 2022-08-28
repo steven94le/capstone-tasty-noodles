@@ -8,6 +8,7 @@ import SummaryData from "./SummaryData";
 import Ingredients from "./Ingredients";
 import Instructions from "./Instructions";
 import { useAuth0 } from "@auth0/auth0-react";
+import SimilarRecipes from "./SimilarRecipes";
 
 const Recipe = () => {
   const [recipe, setRecipe] = useState({});
@@ -74,6 +75,7 @@ const Recipe = () => {
             <Ingredients recipe={recipe} />
           </Row>
           <Instructions recipe={recipe} />
+          <SimilarRecipes />
         </Wrapper>
       ) : (
         <Loader />
