@@ -2,51 +2,24 @@ import React, { useContext } from "react";
 import { RecipeListContext } from "../../components/provider/RecipeListContext";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
 
 const SimilarRecipes = () => {
   const { recipeList } = useContext(RecipeListContext);
-
-  const simiarRecipes = recipeList.sort(() => 0.5 - Math.random()).slice(0, 15);
-
-  let slider = document.querySelector(".recipes-container");
-
-  const btnPrev = () => {
-    if (slider) {
-      let width = slider.clientWidth;
-      slider.scrollLeft = slider.scrollLeft - width;
-    }
-  };
-  const btnNext = () => {
-    if (slider) {
-      let width = slider.clientWidth;
-      slider.scrollLeft = slider.scrollLeft + width;
-    }
-  };
+  const simiarRecipes = recipeList.sort(() => 0.5 - Math.random()).slice(0, 5);
 
   return (
     <Wrapper>
       <StyledHeader>Similar Recipes</StyledHeader>
-      <Carousel>
-        <List className="recipes-container">
-          {simiarRecipes?.map((recipe, index) => (
-            <StyledLink to={`/recipe/${recipe.id}`} key={`${recipe}-${index}`}>
-              <Recipe>
-                <Thumbnail src={recipe.thumbnail} alt="thumbnail" />
-                <RecipeName>{recipe.name}</RecipeName>
-              </Recipe>
-            </StyledLink>
-          ))}
-        </List>
-      </Carousel>
-      <StyledButtons>
-        <Btn style={{ left: "0" }} onClick={btnPrev}>
-          <FiArrowLeft />
-        </Btn>
-        <Btn style={{ right: "0" }} onClick={btnNext}>
-          <FiArrowRight />
-        </Btn>
-      </StyledButtons>
+      <List>
+        {simiarRecipes?.map((recipe, index) => (
+          <StyledLink to={`/recipe/${recipe.id}`} key={`${recipe}-${index}`}>
+            <Recipe>
+              <Thumbnail src={recipe.thumbnail} alt="thumbnail" />
+              <RecipeName>{recipe.name}</RecipeName>
+            </Recipe>
+          </StyledLink>
+        ))}
+      </List>
     </Wrapper>
   );
 };
@@ -65,8 +38,8 @@ const StyledHeader = styled.div`
 const Recipe = styled.div`
   position: relative;
   border: 1px black solid;
-  max-width: 200px;
-  max-height: 200px;
+  max-width: 250px;
+  max-height: 250px;
   border-radius: var(--border-radius);
   background: var(--off-white);
   padding: 10px;
@@ -85,8 +58,8 @@ const StyledLink = styled(Link)`
 `;
 
 const Thumbnail = styled.img`
-  height: 150px;
-  width: 150px;
+  height: 200px;
+  width: 200px;
 `;
 
 const RecipeName = styled.div`
@@ -99,34 +72,11 @@ const RecipeName = styled.div`
   margin-top: 0.25rem;
 `;
 
-const Carousel = styled.div`
-  width: 100vw;
-  margin-left: -17rem;
-`;
-
 const List = styled.div`
   display: flex;
-  overflow-x: hidden;
-  overflow-y: hidden;
-  scroll-behavior: smooth;
+  justify-content: center;
   gap: 1rem;
   padding: 1rem 0;
-`;
-
-const StyledButtons = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Btn = styled.button`
-  border: none;
-  width: 100px;
-  height: 100%;
-  background: none;
-
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 export default SimilarRecipes;
