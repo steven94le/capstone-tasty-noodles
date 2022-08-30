@@ -4,8 +4,8 @@ import Header from "./components/Header";
 import NavBar from "./components/NavBar";
 import GlobalStyles from "./GlobalStyles";
 import About from "./pages/About";
-import Blogs from "./pages/Blogs";
 import Home from "./pages/Home/Home";
+import Places from "./pages/Places/Places";
 import Profile from "./pages/Profile/Profile";
 import Recipe from "./pages/Recipe/Recipe";
 
@@ -22,8 +22,8 @@ const App = () => {
         <Route exact path="/recipe/:id">
           <Recipe />
         </Route>
-        <Route exact path="/blogs">
-          <Blogs />
+        <Route exact path="/places">
+          <Places />
         </Route>
         <Route exact path="/about">
           <About />

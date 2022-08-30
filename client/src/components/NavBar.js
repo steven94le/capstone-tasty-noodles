@@ -15,8 +15,8 @@ const NavBar = () => {
         <StyledNavLink exact to="/">
           <p>Recipes</p>
         </StyledNavLink>
-        <StyledNavLink exact to="/blogs">
-          <p>Blogs</p>
+        <StyledNavLink exact to="/places">
+          <p>Places</p>
         </StyledNavLink>
         <StyledNavLink exact to="/about">
           <p>About</p>
