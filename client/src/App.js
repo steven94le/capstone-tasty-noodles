@@ -3,8 +3,8 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Header from "./components/Header";
 import NavBar from "./components/NavBar";
 import GlobalStyles from "./GlobalStyles";
-import About from "./pages/About";
 import Home from "./pages/Home/Home";
+import LandingPage from "./pages/LandingPage/LandingPage";
 import Places from "./pages/Places/Places";
 import Profile from "./pages/Profile/Profile";
 import Recipe from "./pages/Recipe/Recipe";
@@ -17,6 +17,9 @@ const App = () => {
       <NavBar />
       <Switch>
         <Route exact path="/">
+          <LandingPage />
+        </Route>
+        <Route exact path="/recipes">
           <Home />
         </Route>
         <Route exact path="/recipe/:id">
@@ -24,9 +27,6 @@ const App = () => {
         </Route>
         <Route exact path="/places">
           <Places />
-        </Route>
-        <Route exact path="/about">
-          <About />
         </Route>
         <Route exact path="/profile/:id">
           <Profile />

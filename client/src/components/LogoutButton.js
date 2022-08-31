@@ -12,7 +12,7 @@ const LogoutButton = () => {
   );
 };
 
-const StyledLogOut = styled.button`
+const StyledLogOut = styled.div`
   border: 1px solid black;
   border-radius: var(--border-radius);
   width: 100px;

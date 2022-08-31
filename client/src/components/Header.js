@@ -1,9 +1,18 @@
 import React from "react";
 import styled from "styled-components";
+import { NavLink } from "react-router-dom";
 
 const Header = () => {
-  return <StyledHeader>Tasty Noodles</StyledHeader>;
+  return (
+    <StyledHeader>
+      <StyledLink to="/">Tasty Noodles</StyledLink>
+    </StyledHeader>
+  );
 };
+
+const StyledLink = styled(NavLink)`
+  color: black;
+`;
 
 const StyledHeader = styled.h1`
   font-size: 48px;

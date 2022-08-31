@@ -4,6 +4,7 @@ import { mapStyles } from "./mapStyles";
 import styled from "styled-components";
 import getRestaurants from "../../api/getRestaurants";
 
+const API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 const libraries = ["places"];
 
 const mapContainerStyle = {
@@ -21,7 +22,6 @@ const options = {
 
 const Places = () => {
   const [restaurants, setRestaurants] = useState("");
-  const API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: API_KEY,

@@ -12,14 +12,11 @@ const NavBar = () => {
   return (
     <Wrapper>
       <StyledLinks>
-        <StyledNavLink exact to="/">
+        <StyledNavLink exact to="/recipes">
           <p>Recipes</p>
         </StyledNavLink>
         <StyledNavLink exact to="/places">
           <p>Places</p>
-        </StyledNavLink>
-        <StyledNavLink exact to="/about">
-          <p>About</p>
         </StyledNavLink>
         {user ? (
           <>
