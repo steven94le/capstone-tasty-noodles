@@ -9,7 +9,6 @@ const Pagination = ({
   recipesPerPage,
 }) => {
   const [numPages, setNumPages] = useState();
-  console.log("numPages:", numPages);
 
   useEffect(() => {
     setNumPages(Math.ceil(filteredList.length / recipesPerPage));
