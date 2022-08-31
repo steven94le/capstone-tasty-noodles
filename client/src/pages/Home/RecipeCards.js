@@ -12,10 +12,10 @@ import {
   IoMedalOutline,
 } from "react-icons/io5";
 
-const RecipeCards = ({ filteredList }) => {
+const RecipeCards = ({ currentRecipes }) => {
   return (
     <Wrapper>
-      {filteredList.map((recipe) => (
+      {currentRecipes.map((recipe) => (
         <Card to={`/recipe/${recipe.id}`} key={`${recipe.id}`}>
           <Thumbnail src={recipe.thumbnail} alt="thumbnail" />
           <div>

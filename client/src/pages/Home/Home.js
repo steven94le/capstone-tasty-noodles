@@ -1,21 +1,31 @@
 import React, { useEffect, useState, useContext } from "react";
 import getRecipes from "../../api/getRecipes";
-import Checkbox from "../../components/Checkbox";
-import Counter from "../../components/Counter";
-import Search from "../../components/Search";
+import Checkbox from "./Checkbox";
+import Counter from "./Counter";
+import Search from "./Search";
 import Loader from "../../components/Loader";
 import RecipeCards from "./RecipeCards";
 import { useToggle } from "../../components/hooks/Hooks";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { RecipeListContext } from "../../components/provider/RecipeListContext";
+import Pagination from "./Pagination";
 
 const Home = () => {
   const { recipeList, setRecipeList } = useContext(RecipeListContext);
   const [checkFilters, setCheckFilters] = useState([]);
   const [filteredList, setFilteredList] = useState([]);
   const [loadingStatus, setLoadingStatus] = useState("loading");
-  const [isBillingToggled, toggle] = useToggle();
+  const [isSearchBarToggled, toggle] = useToggle();
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [recipesPerPage] = useState(10);
+  const indexOfLastRecipe = currentPage * recipesPerPage;
+  const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;
+  const currentRecipes = filteredList.slice(
+    indexOfFirstRecipe,
+    indexOfLastRecipe
+  );
 
   const recipeIds = recipeList.map((recipe) => {
     return recipe.id;
@@ -91,7 +101,7 @@ const Home = () => {
       {loadingStatus === "loaded" ? (
         <>
           <ButtonArea>
-            {isBillingToggled ? (
+            {isSearchBarToggled ? (
               <StyledButton
                 onClick={() => {
                   toggle();
@@ -115,14 +125,20 @@ const Home = () => {
               <StyledButton>Surprise Me!</StyledButton>
             </Link>
           </ButtonArea>
-          {isBillingToggled && (
+          {isSearchBarToggled && (
             <Search handleSearch={handleSearch} recipeList={recipeList} />
           )}
-          {!isBillingToggled && (
+          {!isSearchBarToggled && (
             <Checkbox handleToggle={handleToggle} checkFilters={checkFilters} />
           )}
           <Counter filteredList={filteredList} recipeList={recipeList} />
-          <RecipeCards filteredList={filteredList} />
+          <Pagination
+            filteredList={filteredList}
+            recipesPerPage={recipesPerPage}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+          <RecipeCards currentRecipes={currentRecipes} />
         </>
       ) : (
         <Loader />
