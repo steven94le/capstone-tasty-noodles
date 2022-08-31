@@ -1,6 +1,5 @@
 import React from "react";
-import styled from "styled-components";
-
+import styled, { keyframes } from "styled-components";
 import ramenImg1 from "./assets/unsplash-ramen1.jpg";
 import ramenImg2 from "./assets/unsplash-ramen2.jpg";
 
@@ -30,7 +29,7 @@ const LandingPage = () => {
 };
 
 const Container = styled.div`
-  margin: 1rem 20rem;
+  margin: 1rem 18rem;
   gap: 1rem 3rem;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -39,6 +38,8 @@ const Container = styled.div`
     "text1 text1 photo2"
     "photo1 photo1 photo2"
     "photo1 photo1 text2";
+  padding: 1rem;
+  border-radius: 5px;
 
   p {
     font-size: 28px;
@@ -64,10 +65,20 @@ const Item4 = styled(Item)`
   grid-area: text2;
 `;
 
+const fadeIn = keyframes`
+0% {
+  opacity: 0
+}
+100% {
+  opacity: 1;
+}
+`;
+
 const StyledImg = styled.img`
   height: 100%;
   width: 100%;
   border-radius: 5px;
+  animation: ${fadeIn} 2s;
 `;
 
 const ObliqueFont = styled.span`

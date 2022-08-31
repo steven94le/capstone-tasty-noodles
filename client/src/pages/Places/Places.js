@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 import { mapStyles } from "./mapStyles";
 import styled from "styled-components";
-import getRestaurants from "../../api/getRestaurants";
+import {
+  getLatLongCoordinates,
+  getRestaurants,
+} from "../../api/getRestaurants";
+import { MdRamenDining } from "react-icons/md";
 
 const API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
-const libraries = ["places"];
 
 const mapContainerStyle = {
   width: "40%",
-  height: "50vh",
+  height: "65vh",
 };
-
-const centerMapPosition = { lat: 45.5019, lng: -73.5674 };
 
 const options = {
   styles: mapStyles,
@@ -20,54 +21,103 @@ const options = {
   zoomControl: true,
 };
 
+//concordia university
+//H3G1M8
+//downtown vancouver
+//V6Z2H7
+//empire state building
+//10001
+
 const Places = () => {
   const [restaurants, setRestaurants] = useState("");
+  const [libraries] = useState(["places"]);
+  const [centerMapPosition, setCenterMapPosition] = useState({
+    lat: 45.5019,
+    lng: -73.5674,
+  });
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: API_KEY,
     libraries,
   });
 
-  useEffect(() => {
-    getRestaurants().then(setRestaurants);
-  }, []);
+  const [postalCodeInput, setPostalCodeInput] = useState("");
 
-  return isLoaded && restaurants ? (
+  const handleGetRestaurants = async (postalCodeInput) => {
+    const latLongData = await getLatLongCoordinates(postalCodeInput);
+    const latLongCoordinates = `${latLongData.results[0].geometry.location.lat},${latLongData.results[0].geometry.location.lng}`;
+    const nearestRestaurants = await getRestaurants(latLongCoordinates);
+
+    const nearestRestaurantsRanked = nearestRestaurants
+      .filter((restaurant) => restaurant.rating)
+      .sort((a, b) => (a.rating > b.rating ? -1 : 1));
+
+    const nearestRestaurantsRankedTopTen = nearestRestaurantsRanked.slice(10);
+
+    setCenterMapPosition({
+      lat: latLongData.results[0].geometry.location.lat,
+      lng: latLongData.results[0].geometry.location.lng,
+    });
+    setRestaurants(nearestRestaurantsRankedTopTen);
+  };
+
+  return isLoaded ? (
     <>
       <StyledHeader>
-        Noodle Town <span>🍜</span>
+        Noodle Town <span>🍜</span> Top Rated Ramen Restaurants Near You!
       </StyledHeader>
-      <Wrapper>
-        <GoogleMap
-          zoom={13}
-          center={centerMapPosition}
-          mapContainerStyle={mapContainerStyle}
-          options={options}
+      <InputArea>
+        <input
+          name="postalCode"
+          type="text"
+          placeholder="Input Postal Code"
+          onChange={(e) => setPostalCodeInput(e.target.value)}
+          required
+          maxLength="7"
+        ></input>
+        <button
+          onClick={() => {
+            handleGetRestaurants(postalCodeInput);
+          }}
         >
-          <Marker position={centerMapPosition}></Marker>
-          {restaurants.map((restaurant, index) => {
-            const lat1 = restaurant.geometry.location.lat;
-            const lng1 = restaurant.geometry.location.lng;
-            const restauPosition = { lat: lat1, lng: lng1 };
-            return (
-              <Marker
-                position={restauPosition}
-                key={`${restaurant}-${index + 1}`}
-              ></Marker>
-            );
-          })}
-        </GoogleMap>
-        <RestaurantList>
-          {restaurants.map((restaurant) => {
-            return (
-              <div key={restaurant.reference}>
-                {restaurant.name} ({restaurant.rating}/5)
-                <p>{restaurant.formatted_address}</p>
-              </div>
-            );
-          })}
-        </RestaurantList>
-      </Wrapper>
+          Enter
+        </button>
+      </InputArea>
+      {restaurants ? (
+        <Wrapper>
+          <GoogleMap
+            zoom={14}
+            center={centerMapPosition}
+            mapContainerStyle={mapContainerStyle}
+            options={options}
+          >
+            <Marker position={centerMapPosition}></Marker>
+            {restaurants?.map((restaurant, index) => {
+              const lat1 = restaurant.geometry.location.lat;
+              const lng1 = restaurant.geometry.location.lng;
+              const restauPosition = { lat: lat1, lng: lng1 };
+              return (
+                <Marker
+                  position={restauPosition}
+                  key={`${restaurant}-${index + 1}`}
+                ></Marker>
+              );
+            })}
+          </GoogleMap>
+          <RestaurantList>
+            {restaurants.map((restaurant) => {
+              return (
+                <div key={restaurant.reference}>
+                  <MdRamenDining /> {restaurant.name} ({restaurant.rating}/5)
+                  <p>{restaurant.formatted_address}</p>
+                </div>
+              );
+            })}
+          </RestaurantList>
+        </Wrapper>
+      ) : (
+        <></>
+      )}
     </>
   ) : (
     <></>
@@ -75,8 +125,14 @@ const Places = () => {
 };
 
 const StyledHeader = styled.h1`
-  padding: 1.25rem;
+  padding: 1rem;
   font-size: 24px;
+`;
+
+const InputArea = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 0.25rem;
 `;
 
 const Wrapper = styled.div`
@@ -87,7 +143,14 @@ const Wrapper = styled.div`
 
 const RestaurantList = styled.div`
   div {
-    padding-bottom: 0.4rem;
+    padding: 0.4rem;
+    border: 1px black solid;
+    transition: 300ms transform ease-in-out;
+
+    :hover {
+      transform: scale(1.025);
+      box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.5);
+    }
   }
 `;
 
