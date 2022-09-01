@@ -8,8 +8,9 @@ const Profile = () => {
   const { user } = useAuth0();
   const { picture, name, email, nickname } = user;
   const [profileInfo, setProfileInfo] = useState([]);
-  const { savedRecipes } = profileInfo;
+  const { savedRecipes, savedLocations } = profileInfo;
   const [recipes, setRecipes] = useState(savedRecipes);
+  const [locations, setLocations] = useState(savedLocations);
   const [deleteRecipeMsg, setDeleteRecipeMsg] = useState("");
 
   const handleRemoveSavedRecipe = async (e) => {
@@ -38,6 +39,7 @@ const Profile = () => {
     getUser(email).then((data) => {
       setProfileInfo(data);
       setRecipes(data.savedRecipes);
+      setLocations(data.savedLocations);
     });
   }, [email]);
 
@@ -51,8 +53,14 @@ const Profile = () => {
         <div>{name}</div>
         <div>{email}</div>
       </Item1>
+      <Item5>
+        <div>Friends?</div>
+        <hr />
+      </Item5>
       <Item2>
-        <div>Saved Recipes {deleteRecipeMsg}</div>
+        <div>
+          Saved Recipes ({recipes?.length}) {deleteRecipeMsg}
+        </div>
         <hr />
         <Recipes>
           {recipes?.map((recipe, index) => (
@@ -75,12 +83,23 @@ const Profile = () => {
         </Recipes>
       </Item2>
       <Item3>
+        <div>Saved Locations ({locations?.length})</div>
+        <hr />
+        <LocationsWrapper>
+          {locations?.map((location, index) => (
+            <Location key={`${location}-${index}`}>
+              <div>
+                {location.name} ({location.rating}/5)
+              </div>
+              <div>{location.address}</div>
+            </Location>
+          ))}
+        </LocationsWrapper>
+      </Item3>
+      <Item4>
         <div>Saved X</div>
         <hr />
-        <div>X</div>
-        <div>X</div>
-        <div>X</div>
-      </Item3>
+      </Item4>
     </Container>
   );
 };
@@ -93,9 +112,10 @@ const Container = styled.div`
   grid-auto-rows: minmax(200px, auto);
   grid-gap: 20px;
   grid-template-areas:
-    "profile X"
-    "recipe recipe"
-    "location location";
+    "profile X X"
+    "recipe recipe recipe"
+    "location location location"
+    "Y Y Y";
 `;
 
 const Item = styled.div`
@@ -115,6 +135,14 @@ const Item2 = styled(Item)`
 
 const Item3 = styled(Item)`
   grid-area: location;
+`;
+
+const Item4 = styled(Item)`
+  grid-area: Y;
+`;
+
+const Item5 = styled(Item)`
+  grid-area: X;
 `;
 
 const Recipes = styled.div`
@@ -163,11 +191,35 @@ const Thumbnail = styled.img`
 const RecipeName = styled.div`
   font-size: 12px;
   max-width: 150px;
-  max-height: 25px;
+  max-height: 150px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   margin-top: 0.25rem;
+`;
+
+const LocationsWrapper = styled.div`
+  display: flex;
+  gap: 1rem;
+`;
+
+const Location = styled.div`
+  position: relative;
+  border: 1px black solid;
+  width: 250px;
+  height: 75px;
+  border-radius: var(--border-radius);
+  background: var(--off-white);
+  padding: 10px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+  transition: 300ms transform ease-in-out;
+
+  :hover {
+    border: 0.5px solid lightgrey;
+    transform: scale(1.1);
+    box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+  }
 `;
 
 export default Profile;

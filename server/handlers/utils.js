@@ -71,6 +71,23 @@ const deleteSavedRecipe = async (email, updatedSavedRecipes) => {
   }
 };
 
+const saveLocation = async (email, id, name, address, rating) => {
+  try {
+    const client = await startClient();
+    const db = client.db("tasty-noodles");
+    await db
+      .collection("users")
+      .updateOne(
+        { email },
+        { $addToSet: { savedLocations: { name, id, address, rating } } }
+      );
+    client.close();
+    return;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const findUser = async (email) => {
   try {
     const client = await startClient();
@@ -119,5 +136,6 @@ module.exports = {
   getUsers,
   saveRecipe,
   deleteSavedRecipe,
+  saveLocation,
   sendResponse,
 };

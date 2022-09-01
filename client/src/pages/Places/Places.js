@@ -7,6 +7,7 @@ import {
   getRestaurants,
 } from "../../api/getRestaurants";
 import { MdRamenDining } from "react-icons/md";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
@@ -29,6 +30,7 @@ const options = {
 //10001
 
 const Places = () => {
+  const { user } = useAuth0();
   const [restaurants, setRestaurants] = useState("");
   const [libraries] = useState(["places"]);
   const [centerMapPosition, setCenterMapPosition] = useState({
@@ -42,6 +44,7 @@ const Places = () => {
   });
 
   const [postalCodeInput, setPostalCodeInput] = useState("");
+  const [saveLocationMsg, setSaveLocationMsg] = useState("");
 
   const handleGetRestaurants = async (postalCodeInput) => {
     const latLongData = await getLatLongCoordinates(postalCodeInput);
@@ -53,12 +56,43 @@ const Places = () => {
       .sort((a, b) => (a.rating > b.rating ? -1 : 1));
 
     const nearestRestaurantsRankedTopTen = nearestRestaurantsRanked.slice(10);
+    console.log(
+      "nearestRestaurantsRankedTopTen:",
+      nearestRestaurantsRankedTopTen
+    );
 
     setCenterMapPosition({
       lat: latLongData.results[0].geometry.location.lat,
       lng: latLongData.results[0].geometry.location.lng,
     });
     setRestaurants(nearestRestaurantsRankedTopTen);
+  };
+
+  const handleSaveLocation = async (e, restaurant) => {
+    e.preventDefault();
+
+    const response = await fetch("/save-location", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: user.email.toLowerCase(),
+        id: restaurant.place_id,
+        name: restaurant.name,
+        address: restaurant.formatted_address,
+        rating: restaurant.rating,
+      }),
+    });
+
+    const data = await response.json();
+    const locationSaved = data.data;
+
+    if (!locationSaved) {
+      setSaveLocationMsg(data.message);
+    } else {
+      setSaveLocationMsg(data.message);
+    }
   };
 
   return isLoaded ? (
@@ -82,6 +116,7 @@ const Places = () => {
         >
           Enter
         </button>
+        {saveLocationMsg}
       </InputArea>
       {restaurants ? (
         <Wrapper>
@@ -110,6 +145,13 @@ const Places = () => {
                 <div key={restaurant.reference}>
                   <MdRamenDining /> {restaurant.name} ({restaurant.rating}/5)
                   <p>{restaurant.formatted_address}</p>
+                  <button
+                    onClick={(e) => {
+                      handleSaveLocation(e, restaurant);
+                    }}
+                  >
+                    Save Location
+                  </button>
                 </div>
               );
             })}
@@ -148,8 +190,9 @@ const RestaurantList = styled.div`
     transition: 300ms transform ease-in-out;
 
     :hover {
-      transform: scale(1.025);
       box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.5);
+      cursor: pointer;
+      transform: scale(1.05);
     }
   }
 `;

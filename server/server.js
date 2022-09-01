@@ -10,6 +10,7 @@ const {
   handleDeleteSavedRecipe,
   handleGetUser,
   handleGetUsers,
+  handleSaveLocation,
 } = require("./handlers/handlers");
 
 const PORT = 8000;
@@ -42,6 +43,8 @@ express()
 
   .post("/save-recipe", handleSaveRecipe)
   .delete("/delete-saved-recipe", handleDeleteSavedRecipe)
+
+  .post("/save-location", handleSaveLocation)
 
   // catch all endpoint.
   .get("*", (req, res) => {
