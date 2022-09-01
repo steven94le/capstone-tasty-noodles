@@ -8,6 +8,7 @@ const {
   getUser,
   getUsers,
   saveLocation,
+  deleteSavedLocation,
   sendResponse,
 } = require("./utils.js");
 
@@ -140,6 +141,42 @@ const handleSaveLocation = async (req, res) => {
 };
 
 /**
+ * handler to delete a saved location from user's profile page
+ * @param {*} req - with body of log in data: `email`, `recipeId`
+ * @param {*} res
+ * @return saved location deleted
+ */
+const handleDeleteSavedLocation = async (req, res) => {
+  const { email, deletedLocationId } = req.body;
+
+  try {
+    const user = await getUser(email);
+
+    const { savedLocations } = user;
+
+    const locationIds = savedLocations.map((savedLocation) => {
+      return savedLocation.id;
+    });
+
+    if (!locationIds.includes(deletedLocationId)) {
+      sendResponse(res, 404, null, "Location not found!");
+    }
+
+    const updatedSavedLocations = savedLocations.filter((savedLocation) => {
+      return savedLocation.id !== deletedLocationId;
+    });
+
+    const locationDeleted = await deleteSavedLocation(
+      email,
+      updatedSavedLocations
+    );
+    sendResponse(res, 200, locationDeleted, "Location deleted!");
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+/**
  * handler to get user information
  * @param {*} req
  * @param {*} res
@@ -183,6 +220,7 @@ module.exports = {
   handleSaveRecipe,
   handleDeleteSavedRecipe,
   handleSaveLocation,
+  handleDeleteSavedLocation,
   handleGetUser,
   handleGetUsers,
 };

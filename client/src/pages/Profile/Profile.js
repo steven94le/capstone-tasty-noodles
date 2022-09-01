@@ -12,6 +12,7 @@ const Profile = () => {
   const [recipes, setRecipes] = useState(savedRecipes);
   const [locations, setLocations] = useState(savedLocations);
   const [deleteRecipeMsg, setDeleteRecipeMsg] = useState("");
+  const [deleteLocationMsg, setDeleteLocationMsg] = useState("");
 
   const handleRemoveSavedRecipe = async (e) => {
     e.preventDefault();
@@ -33,6 +34,30 @@ const Profile = () => {
 
     setDeleteRecipeMsg(deleteMsg);
     setRecipes(recipes.filter((recipe) => recipe.recipeId !== deletedRecipeId));
+  };
+
+  const handleRemoveSavedLocation = async (e) => {
+    e.preventDefault();
+    const deletedLocationId = e.target.value;
+
+    const response = await fetch("/delete-saved-location", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: user.email.toLowerCase(),
+        deletedLocationId,
+      }),
+    });
+
+    const data = await response.json();
+    const deleteMsg = data.message;
+
+    setDeleteLocationMsg(deleteMsg);
+    setLocations(
+      locations.filter((location) => location.id !== deletedLocationId)
+    );
   };
 
   useEffect(() => {
@@ -83,11 +108,19 @@ const Profile = () => {
         </Recipes>
       </Item2>
       <Item3>
-        <div>Saved Locations ({locations?.length})</div>
+        <div>
+          Saved Locations ({locations?.length}) {deleteLocationMsg}
+        </div>
         <hr />
         <LocationsWrapper>
           {locations?.map((location, index) => (
             <Location key={`${location}-${index}`}>
+              <StyledButton
+                value={location.id}
+                onClick={handleRemoveSavedLocation}
+              >
+                X
+              </StyledButton>
               <div>
                 {location.name} ({location.rating}/5)
               </div>
