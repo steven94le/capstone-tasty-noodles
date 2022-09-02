@@ -10,6 +10,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { RecipeListContext } from "../../components/provider/RecipeListContext";
 import Pagination from "./Pagination";
+import DropdownSort from "./DropdownSort";
 
 const Home = () => {
   const { recipeList, setRecipeList } = useContext(RecipeListContext);
@@ -132,6 +133,11 @@ const Home = () => {
             <Checkbox handleToggle={handleToggle} checkFilters={checkFilters} />
           )}
           <Counter filteredList={filteredList} recipeList={recipeList} />
+          <DropdownSort
+            filteredList={filteredList}
+            setFilteredList={setFilteredList}
+            setCurrentPage={setCurrentPage}
+          />
           <Pagination
             filteredList={filteredList}
             recipesPerPage={recipesPerPage}

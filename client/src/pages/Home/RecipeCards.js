@@ -56,7 +56,7 @@ const RecipeCards = ({ currentRecipes }) => {
                 </Info>
                 <Info>
                   <IoTimerOutline />
-                  {recipe.prepTimeMinutes ? (
+                  {recipe.cookTimeMinutes ? (
                     <p>Cook: {recipe.cookTimeMinutes} mins</p>
                   ) : (
                     <p>Cook: N/A</p>
