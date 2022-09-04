@@ -105,23 +105,11 @@ const deleteSavedLocation = async (email, updatedSavedLocations) => {
   }
 };
 
-const findUser = async (email) => {
+const getUser = async (handle) => {
   try {
     const client = await startClient();
     const db = client.db("tasty-noodles");
-    const foundUser = await db.collection("users").findOne({ email });
-    client.close();
-    return foundUser;
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-const getUser = async (email) => {
-  try {
-    const client = await startClient();
-    const db = client.db("tasty-noodles");
-    const user = await db.collection("users").findOne({ email });
+    const user = await db.collection("users").findOne({ handle });
     client.close();
     return user;
   } catch (err) {
@@ -129,11 +117,14 @@ const getUser = async (email) => {
   }
 };
 
-const getUsers = async () => {
+const getOtherUsers = async (handle) => {
   try {
     const client = await startClient();
     const db = client.db("tasty-noodles");
-    const users = await db.collection("users").find().toArray();
+    const users = await db
+      .collection("users")
+      .find({ handle: { $ne: handle } })
+      .toArray();
     client.close();
     return users;
   } catch (err) {
@@ -148,9 +139,8 @@ const sendResponse = (res, status, data, message = "No message included") => {
 module.exports = {
   getRecipes,
   getRecipe,
-  findUser,
   getUser,
-  getUsers,
+  getOtherUsers,
   saveRecipe,
   deleteSavedRecipe,
   saveLocation,

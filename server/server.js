@@ -9,7 +9,7 @@ const {
   handleSaveRecipe,
   handleDeleteSavedRecipe,
   handleGetUser,
-  handleGetUsers,
+  handleGetOtherUsers,
   handleSaveLocation,
   handleDeleteSavedLocation,
 } = require("./handlers/handlers");
@@ -39,7 +39,7 @@ express()
 
   .get("/recipes", handleGetRecipes)
   .get("/recipe/:id", handleGetRecipe)
-  .get("/profiles", handleGetUsers)
+  .get("/profile/:id/other-users", handleGetOtherUsers)
   .get("/profile/:id", handleGetUser)
 
   .post("/save-recipe", handleSaveRecipe)

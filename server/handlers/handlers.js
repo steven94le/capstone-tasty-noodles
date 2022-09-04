@@ -4,9 +4,8 @@ const {
   getRecipe,
   saveRecipe,
   deleteSavedRecipe,
-  findUser,
   getUser,
-  getUsers,
+  getOtherUsers,
   saveLocation,
   deleteSavedLocation,
   sendResponse,
@@ -57,15 +56,15 @@ const handleGetRecipe = async (req, res) => {
 
 /**
  * handler to save recipeId into a logged-in user's profile
- * @param {*} req - with body of log in data: `email`, `recipeId`
+ * @param {*} req - with body of log in data: `email`, `handle`, `recipeId`
  * @param {*} res
  * @return saved recipe
  */
 const handleSaveRecipe = async (req, res) => {
-  const { email, recipeId, name, thumbnail } = req.body;
+  const { email, handle, recipeId, name, thumbnail } = req.body;
 
   try {
-    const user = await findUser(email);
+    const user = await getUser(handle);
 
     if (!user) {
       sendResponse(res, 404, user, "User not found.");
@@ -80,15 +79,15 @@ const handleSaveRecipe = async (req, res) => {
 
 /**
  * handler to delete a saved recipe from user's profile page
- * @param {*} req - with body of log in data: `email`, `recipeId`
+ * @param {*} req - with body of log in data: `email`, `handle`, `recipeId`
  * @param {*} res
  * @return saved recipe deleted
  */
 const handleDeleteSavedRecipe = async (req, res) => {
-  const { email, deletedRecipeId } = req.body;
+  const { email, handle, deletedRecipeId } = req.body;
 
   try {
-    const user = await getUser(email);
+    const user = await getUser(handle);
 
     const { savedRecipes } = user;
 
@@ -113,15 +112,15 @@ const handleDeleteSavedRecipe = async (req, res) => {
 
 /**
  * handler to save location into a logged-in user's profile
- * @param {*} req - with body of log in data: `email`, `recipeId`
+ * @param {*} req - with body of log in data: `email`, `handle`, `recipeId`
  * @param {*} res
  * @return saved location
  */
 const handleSaveLocation = async (req, res) => {
-  const { email, id, name, address, rating } = req.body;
+  const { email, handle, id, name, address, rating } = req.body;
 
   try {
-    const user = await findUser(email);
+    const user = await getUser(handle);
 
     if (!user) {
       sendResponse(res, 404, user, "User not found.");
@@ -142,15 +141,15 @@ const handleSaveLocation = async (req, res) => {
 
 /**
  * handler to delete a saved location from user's profile page
- * @param {*} req - with body of log in data: `email`, `recipeId`
+ * @param {*} req - with body of log in data: `email`, `handle`, `recipeId`
  * @param {*} res
  * @return saved location deleted
  */
 const handleDeleteSavedLocation = async (req, res) => {
-  const { email, deletedLocationId } = req.body;
+  const { email, handle, deletedLocationId } = req.body;
 
   try {
-    const user = await getUser(email);
+    const user = await getUser(handle);
 
     const { savedLocations } = user;
 
@@ -183,16 +182,15 @@ const handleDeleteSavedLocation = async (req, res) => {
  * @return {} {res, 200, users, "User fetch successful"}
  */
 const handleGetUser = async (req, res) => {
-  const { id } = req.params;
+  const { id: handle } = req.params;
 
   try {
-    const userFound = await findUser(id);
+    const user = await getUser(handle);
 
-    if (!userFound) {
+    if (!user) {
       sendResponse(res, 404, user, "User not found.");
     } else {
-      const user = await getUser(id);
-      sendResponse(res, 200, user, "Users fetch successful");
+      sendResponse(res, 200, user, "User fetch successful");
     }
   } catch (err) {
     console.log(err);
@@ -205,9 +203,11 @@ const handleGetUser = async (req, res) => {
  * @param {*} res
  * @return {} {res, 200, users, "Users fetch successful"}
  */
-const handleGetUsers = async (req, res) => {
+const handleGetOtherUsers = async (req, res) => {
+  const { id: handle } = req.params;
+
   try {
-    const users = await getUsers();
+    const users = await getOtherUsers(handle);
     sendResponse(res, 200, users, "Users fetch successful");
   } catch (err) {
     console.log(err);
@@ -222,5 +222,5 @@ module.exports = {
   handleSaveLocation,
   handleDeleteSavedLocation,
   handleGetUser,
-  handleGetUsers,
+  handleGetOtherUsers,
 };
