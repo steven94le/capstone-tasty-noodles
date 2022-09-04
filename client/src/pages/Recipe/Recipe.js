@@ -27,6 +27,7 @@ const Recipe = () => {
       },
       body: JSON.stringify({
         email: user.email.toLowerCase(),
+        handle: user.nickname,
         recipeId: id,
         name: recipe.name,
         thumbnail: recipe.thumbnail,

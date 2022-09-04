@@ -1,38 +1,40 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useAuth0 } from "@auth0/auth0-react";
 import getUser from "../../api/getUser";
-import { Link } from "react-router-dom";
+import getOtherUsers from "../../api/getOtherUsers";
+import { Link, useParams } from "react-router-dom";
+import Members from "./Members";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Profile = () => {
   const { user } = useAuth0();
-  const { picture, name, email, nickname } = user;
-  const [profileInfo, setProfileInfo] = useState([]);
-  const { savedRecipes, savedLocations } = profileInfo;
+  const { id } = useParams();
+
+  const [userInfo, setUserInfo] = useState([]);
+  const { picture, name, email, handle, savedRecipes, savedLocations } =
+    userInfo;
+
+  const [members, setMembers] = useState([]);
+
   const [recipes, setRecipes] = useState(savedRecipes);
   const [locations, setLocations] = useState(savedLocations);
-  const [deleteRecipeMsg, setDeleteRecipeMsg] = useState("");
-  const [deleteLocationMsg, setDeleteLocationMsg] = useState("");
 
   const handleRemoveSavedRecipe = async (e) => {
     e.preventDefault();
     const deletedRecipeId = e.target.value;
 
-    const response = await fetch("/delete-saved-recipe", {
+    await fetch("/delete-saved-recipe", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: user.email.toLowerCase(),
+        email: userInfo.email.toLowerCase(),
+        handle,
         deletedRecipeId,
       }),
     });
 
-    const data = await response.json();
-    const deleteMsg = data.message;
-
-    setDeleteRecipeMsg(deleteMsg);
     setRecipes(recipes.filter((recipe) => recipe.recipeId !== deletedRecipeId));
   };
 
@@ -40,33 +42,33 @@ const Profile = () => {
     e.preventDefault();
     const deletedLocationId = e.target.value;
 
-    const response = await fetch("/delete-saved-location", {
+    await fetch("/delete-saved-location", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: user.email.toLowerCase(),
+        email: userInfo.email.toLowerCase(),
+        handle,
         deletedLocationId,
       }),
     });
 
-    const data = await response.json();
-    const deleteMsg = data.message;
-
-    setDeleteLocationMsg(deleteMsg);
     setLocations(
       locations.filter((location) => location.id !== deletedLocationId)
     );
   };
 
   useEffect(() => {
-    getUser(email).then((data) => {
-      setProfileInfo(data);
-      setRecipes(data.savedRecipes);
-      setLocations(data.savedLocations);
-    });
-  }, [email]);
+    Promise.all([
+      getOtherUsers(id).then(setMembers),
+      getUser(id).then((data) => {
+        setUserInfo(data);
+        setRecipes(data.savedRecipes);
+        setLocations(data.savedLocations);
+      }),
+    ]);
+  }, [id]);
 
   return (
     <Container>
@@ -74,18 +76,17 @@ const Profile = () => {
         <div>Profile</div>
         <hr />
         <img src={picture} alt="profile" />
-        <div>@{nickname}</div>
+        <div>@{handle}</div>
         <div>{name}</div>
         <div>{email}</div>
       </Item1>
-      <Item5>
-        <div>Friends?</div>
+      <Item4>
+        <div>Noodle Community</div>
         <hr />
-      </Item5>
+        <Members members={members} />
+      </Item4>
       <Item2>
-        <div>
-          Saved Recipes ({recipes?.length}) {deleteRecipeMsg}
-        </div>
+        <div>Saved Recipes ({recipes?.length})</div>
         <hr />
         <Recipes>
           {recipes?.map((recipe, index) => (
@@ -94,12 +95,14 @@ const Profile = () => {
               key={`${recipe}-${index}`}
             >
               <Recipe>
-                <StyledButton
-                  value={recipe.recipeId}
-                  onClick={handleRemoveSavedRecipe}
-                >
-                  X
-                </StyledButton>
+                {user.email === email && (
+                  <StyledButton
+                    value={recipe.recipeId}
+                    onClick={handleRemoveSavedRecipe}
+                  >
+                    X
+                  </StyledButton>
+                )}
                 <Thumbnail src={recipe.thumbnail} alt="thumbnail" />
                 <RecipeName>{recipe.name}</RecipeName>
               </Recipe>
@@ -108,19 +111,19 @@ const Profile = () => {
         </Recipes>
       </Item2>
       <Item3>
-        <div>
-          Saved Locations ({locations?.length}) {deleteLocationMsg}
-        </div>
+        <div>Saved Locations ({locations?.length})</div>
         <hr />
         <LocationsWrapper>
           {locations?.map((location, index) => (
             <Location key={`${location}-${index}`}>
-              <StyledButton
-                value={location.id}
-                onClick={handleRemoveSavedLocation}
-              >
-                X
-              </StyledButton>
+              {user.email === email && (
+                <StyledButton
+                  value={location.id}
+                  onClick={handleRemoveSavedLocation}
+                >
+                  X
+                </StyledButton>
+              )}
               <div>
                 {location.name} ({location.rating}/5)
               </div>
@@ -129,10 +132,6 @@ const Profile = () => {
           ))}
         </LocationsWrapper>
       </Item3>
-      <Item4>
-        <div>Saved X</div>
-        <hr />
-      </Item4>
     </Container>
   );
 };
@@ -147,8 +146,7 @@ const Container = styled.div`
   grid-template-areas:
     "profile X X"
     "recipe recipe recipe"
-    "location location location"
-    "Y Y Y";
+    "location location location";
 `;
 
 const Item = styled.div`
@@ -171,10 +169,6 @@ const Item3 = styled(Item)`
 `;
 
 const Item4 = styled(Item)`
-  grid-area: Y;
-`;
-
-const Item5 = styled(Item)`
   grid-area: X;
 `;
 

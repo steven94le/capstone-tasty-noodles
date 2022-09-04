@@ -78,6 +78,7 @@ const Places = () => {
       },
       body: JSON.stringify({
         email: user.email.toLowerCase(),
+        handle: user.nickname,
         id: restaurant.place_id,
         name: restaurant.name,
         address: restaurant.formatted_address,
