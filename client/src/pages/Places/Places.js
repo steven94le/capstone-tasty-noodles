@@ -48,28 +48,34 @@ const Places = () => {
 
   const handleGetRestaurants = async (postalCodeInput) => {
     const latLongData = await getLatLongCoordinates(postalCodeInput);
-    const latLongCoordinates = `${latLongData.results[0].geometry.location.lat},${latLongData.results[0].geometry.location.lng}`;
-    const nearestRestaurants = await getRestaurants(latLongCoordinates);
 
-    const nearestRestaurantsRanked = nearestRestaurants
-      .filter((restaurant) => restaurant.rating)
-      .sort((a, b) => (a.rating > b.rating ? -1 : 1));
+    if (latLongData.results.length === 0) {
+      alert("No results near that area!");
+    } else {
+      const latLongCoordinates = `${latLongData.results[0].geometry.location.lat},${latLongData.results[0].geometry.location.lng}`;
+      const nearestRestaurants = await getRestaurants(latLongCoordinates);
 
-    const nearestRestaurantsRankedTopTen = nearestRestaurantsRanked.slice(10);
-    console.log(
-      "nearestRestaurantsRankedTopTen:",
-      nearestRestaurantsRankedTopTen
-    );
+      const nearestRestaurantsRanked = nearestRestaurants
+        .filter((restaurant) => restaurant.rating)
+        .sort((a, b) => (a.rating > b.rating ? -1 : 1));
 
-    setCenterMapPosition({
-      lat: latLongData.results[0].geometry.location.lat,
-      lng: latLongData.results[0].geometry.location.lng,
-    });
-    setRestaurants(nearestRestaurantsRankedTopTen);
+      const nearestRestaurantsRankedTopTen = nearestRestaurantsRanked.slice(10);
+
+      setCenterMapPosition({
+        lat: latLongData.results[0].geometry.location.lat,
+        lng: latLongData.results[0].geometry.location.lng,
+      });
+      setRestaurants(nearestRestaurantsRankedTopTen);
+    }
   };
 
   const handleSaveLocation = async (e, restaurant) => {
     e.preventDefault();
+
+    if (!user) {
+      alert("User must log in to save location!");
+      return;
+    }
 
     const response = await fetch("/save-location", {
       method: "POST",

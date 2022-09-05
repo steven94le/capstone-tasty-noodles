@@ -66,6 +66,10 @@ const handleSaveRecipe = async (req, res) => {
   try {
     const user = await getUser(handle);
 
+    if (!email) {
+      sendResponse(res, 404, user, "User not logged in.");
+    }
+
     if (!user) {
       sendResponse(res, 404, user, "User not found.");
     } else {
@@ -121,6 +125,10 @@ const handleSaveLocation = async (req, res) => {
 
   try {
     const user = await getUser(handle);
+
+    if (!email) {
+      sendResponse(res, 404, user, "User not logged in.");
+    }
 
     if (!user) {
       sendResponse(res, 404, user, "User not found.");

@@ -20,6 +20,11 @@ const Recipe = () => {
   const handleSaveRecipe = async (e) => {
     e.preventDefault();
 
+    if (!user) {
+      alert("Must log in to save recipe!");
+      return;
+    }
+
     const response = await fetch("/save-recipe", {
       method: "POST",
       headers: {
