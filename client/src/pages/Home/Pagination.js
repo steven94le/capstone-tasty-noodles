@@ -11,8 +11,14 @@ const Pagination = ({
   const [numPages, setNumPages] = useState();
 
   useEffect(() => {
-    setNumPages(Math.ceil(filteredList.length / recipesPerPage));
-  }, [filteredList, recipesPerPage]);
+    const filteredNumPages = Math.ceil(filteredList.length / recipesPerPage);
+
+    if (currentPage > filteredNumPages) {
+      setCurrentPage(1);
+    }
+
+    setNumPages(filteredNumPages);
+  }, [filteredList, recipesPerPage, currentPage, setCurrentPage]);
 
   const handlePageUp = () => {
     if (currentPage >= 1 && currentPage < numPages) {
