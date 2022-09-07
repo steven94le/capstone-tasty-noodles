@@ -7,42 +7,6 @@ const DropdownSort = ({ filteredList, setFilteredList, setCurrentPage }) => {
     const sortedList = [...filteredList];
 
     switch (sortValue) {
-      case "a-z":
-        sortedList.sort((a, b) => {
-          const nameA = a.name.toUpperCase();
-          const nameB = b.name.toUpperCase();
-
-          if (nameA < nameB) {
-            return -1;
-          }
-          if (nameA > nameB) {
-            return 1;
-          }
-
-          return 0;
-        });
-        setFilteredList(sortedList);
-        setCurrentPage(1);
-        break;
-
-      case "z-a":
-        sortedList.sort((a, b) => {
-          const nameA = a.name.toUpperCase();
-          const nameB = b.name.toUpperCase();
-
-          if (nameB < nameA) {
-            return -1;
-          }
-          if (nameB > nameA) {
-            return 1;
-          }
-
-          return 0;
-        });
-        setCurrentPage(1);
-        setFilteredList(sortedList);
-        break;
-
       case "lIngredients-hIngredients":
         sortedList.sort((a, b) => {
           return a.ingredients.length - b.ingredients.length;
@@ -127,6 +91,44 @@ const DropdownSort = ({ filteredList, setFilteredList, setCurrentPage }) => {
         setFilteredList(sortedList);
         break;
 
+      case "lRating-hRating":
+        sortedList.sort((a, b) => {
+          const ratingA = a.userRatings.score;
+          const ratingB = b.userRatings.score;
+
+          if (ratingA === 0 || ratingA === null) {
+            return 1;
+          }
+
+          if (ratingB === 0 || ratingB === null) {
+            return -1;
+          }
+
+          return ratingA - ratingB;
+        });
+        setCurrentPage(1);
+        setFilteredList(sortedList);
+        break;
+
+      case "hRating-lRating":
+        sortedList.sort((a, b) => {
+          const ratingA = a.userRatings.score;
+          const ratingB = b.userRatings.score;
+
+          if (ratingA === 0 || ratingA === null) {
+            return 1;
+          }
+
+          if (ratingB === 0 || ratingB === null) {
+            return -1;
+          }
+
+          return ratingB - ratingA;
+        });
+        setCurrentPage(1);
+        setFilteredList(sortedList);
+        break;
+
       default:
         return filteredList;
     }
@@ -139,18 +141,18 @@ const DropdownSort = ({ filteredList, setFilteredList, setCurrentPage }) => {
         <option disabled value="">
           Select
         </option>
-        <option value="a-z">A-Z</option>
-        <option value="z-a">Z-A</option>
         <option value="lIngredients-hIngredients">
-          Less Ingredients To Most
+          Least Ingredients To Most
         </option>
         <option value="hIngredients-lIngredients">
-          Most Ingredients To Less
+          Most Ingredients To Least
         </option>
-        <option value="lCarlories-hCarlories">Less Calories To Most</option>
-        <option value="hCarlories-lCarlories">Most Calories To Less</option>
-        <option value="lTime-hTime">Less Time To Most</option>
-        <option value="hTime-lTime">Most Time To Less</option>
+        <option value="lCarlories-hCarlories">Least Calories To Most</option>
+        <option value="hCarlories-lCarlories">Most Calories To Least</option>
+        <option value="lTime-hTime">Least Time To Most</option>
+        <option value="hTime-lTime">Most Time To Least</option>
+        <option value="lRating-hRating">Lowest Rating To Highest</option>
+        <option value="hRating-lRating">Highest Rating To Lowest</option>
       </select>
     </Wrapper>
   );
