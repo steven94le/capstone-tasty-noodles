@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import NavBar from "./components/NavBar";
 import GlobalStyles from "./GlobalStyles";
 import Home from "./pages/Home/Home";
+import Inspo from "./pages/Inspo";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import Places from "./pages/Places/Places";
 import Profile from "./pages/Profile/Profile";
@@ -27,6 +28,12 @@ const App = () => {
         </Route>
         <Route exact path="/places">
           <Places />
+        </Route>
+        <Route exact path="/places">
+          <Places />
+        </Route>
+        <Route exact path="/inspo">
+          <Inspo />
         </Route>
         <Route exact path="/profile/:id">
           <Profile />

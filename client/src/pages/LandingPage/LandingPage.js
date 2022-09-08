@@ -8,10 +8,12 @@ const LandingPage = () => {
     <Container>
       <Item1>
         <p>
-          Welcome to<ObliqueFont> Tasty Noodles</ObliqueFont>! 😎 A food nook on
-          the web for quickly finding
-          <ObliqueFont> ~tasty~</ObliqueFont> noodle recipes 👀,
-          <ObliqueFont> saving & sharing</ObliqueFont> all your favorite dishes
+          Welcome to<ObliqueFont> Tasty Noodles</ObliqueFont> 😎!
+          <br></br>A food nook on the web for <ObliqueFont>quickly</ObliqueFont>{" "}
+          finding
+          <ObliqueFont> tasty</ObliqueFont> noodle recipes 👀;
+          <br></br>
+          <ObliqueFont> Save and cook </ObliqueFont> all your favorite dishes
           ✌.
         </p>
       </Item1>
@@ -22,7 +24,11 @@ const LandingPage = () => {
         <StyledImg src={ramenImg1} alt="ramen" />
       </Item3>
       <Item4>
-        <p>lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+        <p>
+          "Anytime I'm eating spicy noodles in a bowl, I'm happy"
+          <br></br>
+          <br></br>- Anthony Bourdain
+        </p>
       </Item4>
     </Container>
   );
@@ -33,7 +39,7 @@ const Container = styled.div`
   gap: 1rem 3rem;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: minmax(100px, auto);
+  grid-auto-rows: minmax(50px, auto);
   grid-template-areas:
     "text1 text1 photo2"
     "photo1 photo1 photo2"
@@ -63,6 +69,9 @@ const Item3 = styled(Item)`
 
 const Item4 = styled(Item)`
   grid-area: text2;
+  p {
+    font-size: 18px;
+  }
 `;
 
 const fadeIn = keyframes`

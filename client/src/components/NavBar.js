@@ -18,6 +18,9 @@ const NavBar = () => {
         <StyledNavLink exact to="/places">
           <p>Places</p>
         </StyledNavLink>
+        <StyledNavLink exact to="/inspo">
+          <p>Inspo</p>
+        </StyledNavLink>
         {user ? (
           <>
             <StyledNavLink exact to={`/profile/${id}`}>
