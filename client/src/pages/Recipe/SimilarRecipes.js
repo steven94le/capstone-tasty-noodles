@@ -9,7 +9,7 @@ const SimilarRecipes = () => {
 
   return (
     <Wrapper>
-      <StyledHeader>Similar Recipes</StyledHeader>
+      <StyledHeader>Check Out Other Recipes</StyledHeader>
       <List>
         {simiarRecipes?.map((recipe, index) => (
           <StyledLink to={`/recipe/${recipe.id}`} key={`${recipe}-${index}`}>

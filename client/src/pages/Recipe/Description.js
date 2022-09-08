@@ -28,6 +28,7 @@ const Description = ({ recipe }) => {
 const RecipeInfo = styled.div`
   display: flex;
   justify-content: space-around;
+  font-size: 18px;
 `;
 
 export default Description;

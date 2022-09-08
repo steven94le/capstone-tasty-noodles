@@ -9,6 +9,8 @@ import Ingredients from "./Ingredients";
 import Instructions from "./Instructions";
 import { useAuth0 } from "@auth0/auth0-react";
 import SimilarRecipes from "./SimilarRecipes";
+import Gallery from "./Gallery";
+import PageSuggestions from "./PageSuggestions";
 
 const Recipe = () => {
   const [recipe, setRecipe] = useState({});
@@ -16,6 +18,8 @@ const Recipe = () => {
   const [loadingStatus, setLoadingStatus] = useState("loading");
   const { user } = useAuth0();
   const [saveRecipeMsg, setSaveRecipeMsg] = useState("");
+
+  const { name, thumbnail } = recipe;
 
   const handleSaveRecipe = async (e) => {
     e.preventDefault();
@@ -69,7 +73,7 @@ const Recipe = () => {
       {loadingStatus === "loaded" ? (
         <Wrapper>
           <StyledHeader>
-            <RecipeName>{recipe.name}</RecipeName>
+            <RecipeName>{name}</RecipeName>
             <SaveButton onClick={handleSaveRecipe}>Save Recipe</SaveButton>
             {saveRecipeMsg}
           </StyledHeader>
@@ -77,11 +81,13 @@ const Recipe = () => {
           <hr />
           <SummaryData recipe={recipe} />
           <Row>
-            <StyledImage src={recipe.thumbnail} alt="thumbnail" />
+            <StyledImage src={thumbnail} alt="thumbnail" />
+            <Gallery />
             <Ingredients recipe={recipe} />
           </Row>
           <Instructions recipe={recipe} />
           <SimilarRecipes />
+          <PageSuggestions />
         </Wrapper>
       ) : (
         <Loader />
@@ -132,6 +138,7 @@ const Row = styled.div`
 const StyledImage = styled.img`
   width: 25rem;
   height: 25rem;
+  height: auto;
   border-radius: var(--border-radius);
 `;
 
