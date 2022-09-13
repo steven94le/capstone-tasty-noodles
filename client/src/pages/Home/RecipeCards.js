@@ -15,72 +15,88 @@ import {
 const RecipeCards = ({ currentRecipes }) => {
   return (
     <Wrapper>
-      {currentRecipes.map((recipe) => (
-        <Card to={`/recipe/${recipe.id}`} key={`${recipe.id}`}>
-          <Thumbnail src={recipe.thumbnail} alt="thumbnail" />
-          <div>
-            <RecipeHeader>
-              <p>{recipe.name}</p>
-            </RecipeHeader>
-            <RecipeDescription>
-              {recipe.userRatings.score ? (
-                recipe.userRatings.score >= 0.9 ? (
-                  <Rating>
-                    <span>
-                      Rating: {Math.round(recipe.userRatings.score * 100) + "%"}
-                    </span>
-                    <IoHappyOutline />
-                    <IoMedalOutline />
-                  </Rating>
+      {currentRecipes.map((recipe) => {
+        const {
+          id,
+          thumbnail,
+          name,
+          userRatings,
+          prepTimeMinutes,
+          cookTimeMinutes,
+          nutrition,
+          ingredients,
+        } = recipe;
+
+        return (
+          <Card to={`/recipe/${id}`} key={id}>
+            <Thumbnail src={thumbnail} alt="thumbnail" />
+            <div>
+              <RecipeHeader>
+                <p>{name}</p>
+              </RecipeHeader>
+              <RecipeDescription>
+                {userRatings.score ? (
+                  userRatings.score >= 0.9 ? (
+                    <Rating>
+                      <span>
+                        Rating: {Math.round(userRatings.score * 100) + "%"}
+                      </span>
+                      <IoHappyOutline />
+                      <IoMedalOutline />
+                    </Rating>
+                  ) : (
+                    <Rating>
+                      <span>
+                        Rating: {Math.round(userRatings.score * 100) + "%"}
+                      </span>
+                    </Rating>
+                  )
                 ) : (
                   <Rating>
-                    <span>
-                      Rating: {Math.round(recipe.userRatings.score * 100) + "%"}
-                    </span>
+                    <span>Rating: N/A</span>
+                    <IoSadOutline />
                   </Rating>
-                )
-              ) : (
-                <Rating>
-                  <span>Rating: N/A</span>
-                  <IoSadOutline />
-                </Rating>
-              )}
-              <InfoGroup>
-                <Info>
-                  <IoRestaurantOutline />
-                  {recipe.prepTimeMinutes ? (
-                    <p>Prep: {recipe.prepTimeMinutes} mins</p>
-                  ) : (
-                    <p>Prep: N/A</p>
-                  )}
-                </Info>
-                <Info>
-                  <IoTimerOutline />
-                  {recipe.cookTimeMinutes ? (
-                    <p>Cook: {recipe.cookTimeMinutes} mins</p>
-                  ) : (
-                    <p>Cook: N/A</p>
-                  )}
-                </Info>
-              </InfoGroup>
-              <InfoGroup>
-                <Info>
-                  <IoFastFoodOutline />
-                  {recipe.nutrition.calories ? (
-                    <p>{recipe.nutrition.calories} Calories</p>
-                  ) : (
-                    <p>N/A Calories</p>
-                  )}
-                </Info>
-                <Info>
-                  <IoList />
-                  <p>{recipe.ingredients.length} Ingredients</p>
-                </Info>
-              </InfoGroup>
-            </RecipeDescription>
-          </div>
-        </Card>
-      ))}
+                )}
+                <InfoGroup>
+                  <Info>
+                    <IoRestaurantOutline />
+                    {prepTimeMinutes ? (
+                      <p>Prep: {prepTimeMinutes} mins</p>
+                    ) : (
+                      <p>Prep: N/A</p>
+                    )}
+                  </Info>
+                  <Info>
+                    <IoTimerOutline />
+                    {cookTimeMinutes ? (
+                      <p>Cook: {cookTimeMinutes} mins</p>
+                    ) : (
+                      <p>Cook: N/A</p>
+                    )}
+                  </Info>
+                </InfoGroup>
+                <InfoGroup>
+                  <Info>
+                    <IoFastFoodOutline />
+                    {nutrition.calories ? (
+                      <p>{nutrition.calories} Calories</p>
+                    ) : (
+                      <p>N/A Calories</p>
+                    )}
+                  </Info>
+                  <Info>
+                    <IoList />
+                    <p>
+                      {ingredients.length}{" "}
+                      {ingredients.length === 1 ? "Ingredient" : "Ingredients"}
+                    </p>
+                  </Info>
+                </InfoGroup>
+              </RecipeDescription>
+            </div>
+          </Card>
+        );
+      })}
     </Wrapper>
   );
 };
@@ -89,14 +105,15 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  overflow: auto;
 `;
 
 const Card = styled(Link)`
   color: black;
   display: flex;
-  margin: 2rem;
+  margin: 1rem;
   padding: 1rem;
-  width: 525px;
+  width: 475px;
   border-radius: var(--border-radius);
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
   transition: 300ms transform ease-in-out;
@@ -114,7 +131,7 @@ const Card = styled(Link)`
 const RecipeHeader = styled.div`
   p {
     font-weight: bold;
-    font-size: 18px;
+    font-size: 17px;
   }
 `;
 
@@ -146,7 +163,7 @@ const Info = styled.div`
   border: 1px grey solid;
   border-radius: var(--border-radius);
   padding: 0.5rem;
-  width: 9rem;
+  width: 8.25rem;
   background-color: var(--off-white);
   font-size: 14px;
 

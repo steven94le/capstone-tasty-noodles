@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import getRecipe from "../../api/getRecipe";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -11,6 +11,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import SimilarRecipes from "./SimilarRecipes";
 import Gallery from "./Gallery";
 import PageSuggestions from "./PageSuggestions";
+import { RecipeListContext } from "../../components/provider/RecipeListContext";
 
 const Recipe = () => {
   const [recipe, setRecipe] = useState({});
@@ -18,6 +19,8 @@ const Recipe = () => {
   const [loadingStatus, setLoadingStatus] = useState("loading");
   const { user } = useAuth0();
   const [saveRecipeMsg, setSaveRecipeMsg] = useState("");
+  const { recipeList } = useContext(RecipeListContext);
+  const [similarRecipes, setSimilarRecipes] = useState();
 
   const { name, thumbnail } = recipe;
 
@@ -54,19 +57,18 @@ const Recipe = () => {
   };
 
   useEffect(() => {
-    let ignore = false;
-
     getRecipe(id).then((data) => {
-      if (!ignore) {
+      try {
         setRecipe(data);
+        setSimilarRecipes(
+          recipeList.sort(() => 0.5 - Math.random()).slice(0, 5)
+        );
         setTimeout(() => setLoadingStatus("loaded"), 1000);
+      } catch (err) {
+        console.log(err);
       }
     });
-
-    return () => {
-      ignore = true;
-    };
-  }, [id]);
+  }, [id, recipeList]);
 
   return (
     <>
@@ -86,7 +88,7 @@ const Recipe = () => {
             <Ingredients recipe={recipe} />
           </Row>
           <Instructions recipe={recipe} />
-          <SimilarRecipes />
+          <SimilarRecipes similarRecipes={similarRecipes} />
           <PageSuggestions />
         </Wrapper>
       ) : (

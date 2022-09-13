@@ -38,4 +38,4 @@ const Image = styled.img`
     transform: scale(2.25);
   }
 `;
-export default Gallery;
+export default React.memo(Gallery);

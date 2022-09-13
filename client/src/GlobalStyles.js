@@ -9,6 +9,9 @@ export default createGlobalStyle`
     --yellow: #ffeb3b;
     --blue: #007fff;
     --off-white: #f5f5f5;
+    --yellow-gradient: linear-gradient(90deg, rgba(255,224,25,1) 0%, rgba(255,237,111,1) 100%);
+    --blue-gradient: linear-gradient(45deg, rgba(30,114,255,1) 0%, rgba(121,170,252,1) 100%);
+    --grey-gradient: linear-gradient(10deg, rgba(190,190,190,1) 0%, rgba(255,255,255,1) 100%);
   }
 
   /* http://meyerweb.com/eric/tools/css/reset/
@@ -47,7 +50,7 @@ export default createGlobalStyle`
       line-height: 1;
       height: 100%;
   overflow: auto;
- background: linear-gradient(90deg, rgba(255,221,0,1) 0%, rgba(251,176,52,1) 100%);
+ background: var(--yellow-gradient);
  
   }
   ol, ul {
@@ -85,14 +88,20 @@ input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-results-button,
 input[type="search"]::-webkit-search-results-decoration { display: none; }
 
+
 input[type="checkbox"] {
   margin: 0;
   width: 1.2em;
   height: 1.2em;
   background: red;
+  transform: scale(1.25);
 
   &:hover {
     cursor: pointer;
+  }
+
+  &:checked {
+    background: var(--blue);
   }
 }
 

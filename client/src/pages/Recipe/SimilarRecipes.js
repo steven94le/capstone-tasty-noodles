@@ -1,18 +1,15 @@
-import React, { useContext } from "react";
-import { RecipeListContext } from "../../components/provider/RecipeListContext";
+import React from "react";
+// import { RecipeListContext } from "../../components/provider/RecipeListContext";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-const SimilarRecipes = () => {
-  const { recipeList } = useContext(RecipeListContext);
-  const simiarRecipes = recipeList.sort(() => 0.5 - Math.random()).slice(0, 5);
-
+const SimilarRecipes = ({ similarRecipes }) => {
   return (
     <Wrapper>
       <StyledHeader>Check Out Other Recipes</StyledHeader>
       <List>
-        {simiarRecipes?.map((recipe, index) => (
-          <StyledLink to={`/recipe/${recipe.id}`} key={`${recipe}-${index}`}>
+        {similarRecipes?.map((recipe) => (
+          <StyledLink to={`/recipe/${recipe.id}`} key={recipe.id}>
             <Recipe>
               <Thumbnail src={recipe.thumbnail} alt="thumbnail" />
               <RecipeName>{recipe.name}</RecipeName>
