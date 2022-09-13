@@ -15,6 +15,7 @@ ReactDOM.render(
         <App />
       </RecipeListProvider>
     </Auth0Provider>
+    ,
   </React.StrictMode>,
   document.getElementById("root")
 );

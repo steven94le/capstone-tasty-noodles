@@ -7,7 +7,7 @@ const DropdownSort = ({ filteredList, setFilteredList, setCurrentPage }) => {
     const sortedList = [...filteredList];
 
     switch (sortValue) {
-      case "lIngredients-hIngredients":
+      case "lowToHighIngredients":
         sortedList.sort((a, b) => {
           return a.ingredients.length - b.ingredients.length;
         });
@@ -15,7 +15,7 @@ const DropdownSort = ({ filteredList, setFilteredList, setCurrentPage }) => {
         setFilteredList(sortedList);
         break;
 
-      case "hIngredients-lIngredients":
+      case "highToLowIngredients":
         sortedList.sort((a, b) => {
           return b.ingredients.length - a.ingredients.length;
         });
@@ -23,7 +23,7 @@ const DropdownSort = ({ filteredList, setFilteredList, setCurrentPage }) => {
         setFilteredList(sortedList);
         break;
 
-      case "lCarlories-hCarlories":
+      case "lowToHighCalories":
         sortedList.sort((a, b) => {
           if (Object.keys(a.nutrition).length === 0) {
             return 1;
@@ -38,7 +38,7 @@ const DropdownSort = ({ filteredList, setFilteredList, setCurrentPage }) => {
         setFilteredList(sortedList);
         break;
 
-      case "hCarlories-lCarlories":
+      case "highToLowCalories":
         sortedList.sort((a, b) => {
           if (Object.keys(a.nutrition).length === 0) {
             return 1;
@@ -53,7 +53,7 @@ const DropdownSort = ({ filteredList, setFilteredList, setCurrentPage }) => {
         setFilteredList(sortedList);
         break;
 
-      case "lTime-hTime":
+      case "lowToHighTime":
         sortedList.sort((a, b) => {
           const totalTimeA = a.prepTimeMinutes + a.cookTimeMinutes;
           const totalTimeB = b.prepTimeMinutes + b.cookTimeMinutes;
@@ -72,7 +72,7 @@ const DropdownSort = ({ filteredList, setFilteredList, setCurrentPage }) => {
         setFilteredList(sortedList);
         break;
 
-      case "hTime-lTime":
+      case "highToLowTime":
         sortedList.sort((a, b) => {
           const totalTimeA = a.prepTimeMinutes + a.cookTimeMinutes;
           const totalTimeB = b.prepTimeMinutes + b.cookTimeMinutes;
@@ -91,7 +91,7 @@ const DropdownSort = ({ filteredList, setFilteredList, setCurrentPage }) => {
         setFilteredList(sortedList);
         break;
 
-      case "lRating-hRating":
+      case "lowToHighRating":
         sortedList.sort((a, b) => {
           const ratingA = a.userRatings.score;
           const ratingB = b.userRatings.score;
@@ -110,7 +110,7 @@ const DropdownSort = ({ filteredList, setFilteredList, setCurrentPage }) => {
         setFilteredList(sortedList);
         break;
 
-      case "hRating-lRating":
+      case "highToLowRating":
         sortedList.sort((a, b) => {
           const ratingA = a.userRatings.score;
           const ratingB = b.userRatings.score;
@@ -141,18 +141,14 @@ const DropdownSort = ({ filteredList, setFilteredList, setCurrentPage }) => {
         <option disabled value="">
           Select
         </option>
-        <option value="lIngredients-hIngredients">
-          Least Ingredients To Most
-        </option>
-        <option value="hIngredients-lIngredients">
-          Most Ingredients To Least
-        </option>
-        <option value="lCarlories-hCarlories">Least Calories To Most</option>
-        <option value="hCarlories-lCarlories">Most Calories To Least</option>
-        <option value="lTime-hTime">Least Time To Most</option>
-        <option value="hTime-lTime">Most Time To Least</option>
-        <option value="lRating-hRating">Lowest Rating To Highest</option>
-        <option value="hRating-lRating">Highest Rating To Lowest</option>
+        <option value="lowToHighIngredients">Least Ingredients To Most</option>
+        <option value="highToLowIngredients">Most Ingredients To Least</option>
+        <option value="lowToHighCalories">Least Calories To Most</option>
+        <option value="highToLowCalories">Most Calories To Least</option>
+        <option value="lowToHighTime">Least Time To Most</option>
+        <option value="highToLowTime">Most Time To Least</option>
+        <option value="lowToHighRating">Lowest Rating To Highest</option>
+        <option value="highToLowRating">Highest Rating To Lowest</option>
       </select>
     </Wrapper>
   );

@@ -56,7 +56,6 @@ const BtnWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100px;
   gap: 1rem;
 `;
 

@@ -24,7 +24,7 @@ const SearchBar = styled.div`
   gap: 0.5rem;
 
   input {
-    width: 40%;
+    width: 100%;
     height: 35px;
     text-align: center;
     font-size: 1rem;

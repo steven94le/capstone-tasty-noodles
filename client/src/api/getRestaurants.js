@@ -1,9 +1,8 @@
 const API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
-
 const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
 export const getLatLongCoordinates = async (postalCode) => {
-  const URL = `https://maps.googleapis.com/maps/api/geocode/json?address=' + ${postalCode} + '&key=${API_KEY}`;
+  const URL = `https://maps.googleapis.com/maps/api/geocode/json?address=${postalCode}&key=${API_KEY}`;
   const latLongResponse = await fetch(proxyurl + URL);
   const latLongData = await latLongResponse.json();
 

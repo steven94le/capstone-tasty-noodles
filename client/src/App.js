@@ -29,9 +29,6 @@ const App = () => {
         <Route exact path="/places">
           <Places />
         </Route>
-        <Route exact path="/places">
-          <Places />
-        </Route>
         <Route exact path="/inspo">
           <Inspo />
         </Route>

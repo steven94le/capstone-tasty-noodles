@@ -19,7 +19,6 @@ const RestaurantMap = ({
   activeMarker,
   setActiveMarker,
 }) => {
-  console.log("restaurants:", restaurants);
   return (
     <GoogleMap
       zoom={14}
