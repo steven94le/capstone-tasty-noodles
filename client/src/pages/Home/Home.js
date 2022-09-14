@@ -12,6 +12,9 @@ import { RecipeListContext } from "../../components/provider/RecipeListContext";
 import Pagination from "./Pagination";
 import DropdownSort from "./DropdownSort";
 
+const CURRENT_PAGE_DEFAULT = 1;
+const RECIPES_PER_PAGE_DEFAULT = 10;
+
 const Home = () => {
   const { recipeList, setRecipeList } = useContext(RecipeListContext);
   const [checkFilters, setCheckFilters] = useState([]);
@@ -19,8 +22,8 @@ const Home = () => {
   const [loadingStatus, setLoadingStatus] = useState("loading");
   const [isSearchBarToggled, toggle] = useToggle();
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [recipesPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(CURRENT_PAGE_DEFAULT);
+  const [recipesPerPage] = useState(RECIPES_PER_PAGE_DEFAULT);
   const indexOfLastRecipe = currentPage * recipesPerPage;
   const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;
   const currentRecipes = filteredList.slice(
@@ -28,7 +31,7 @@ const Home = () => {
     indexOfLastRecipe
   );
 
-  const recipeIds = recipeList.map((recipe) => {
+  const recipeIds = recipeList?.map((recipe) => {
     return recipe.id;
   });
 
@@ -91,67 +94,103 @@ const Home = () => {
 
   useEffect(() => {
     getRecipes().then((data) => {
-      setRecipeList(data);
-      setFilteredList(data);
-      setTimeout(() => setLoadingStatus("loaded"), 1000);
+      try {
+        setRecipeList(data);
+        setFilteredList(data);
+        setTimeout(() => setLoadingStatus("loaded"), 1000);
+      } catch (err) {
+        console.log(err);
+      }
     });
   }, [setRecipeList]);
 
   return (
     <>
       {loadingStatus === "loaded" ? (
-        <>
-          <ButtonArea>
-            {isSearchBarToggled ? (
-              <StyledButton
-                onClick={() => {
-                  toggle();
-                  setFilteredList(recipeList);
-                }}
-              >
-                Use Filters
-              </StyledButton>
-            ) : (
-              <StyledButton
-                onClick={() => {
-                  toggle();
-                  setFilteredList(recipeList);
-                  setCheckFilters([]);
-                }}
-              >
-                Use Search
-              </StyledButton>
+        <Wrapper>
+          <LeftSide>
+            <ButtonArea>
+              {isSearchBarToggled ? (
+                <StyledButton
+                  onClick={() => {
+                    toggle();
+                    setFilteredList(recipeList);
+                  }}
+                >
+                  Use Filters
+                </StyledButton>
+              ) : (
+                <StyledButton
+                  onClick={() => {
+                    toggle();
+                    setFilteredList(recipeList);
+                    setCheckFilters([]);
+                  }}
+                >
+                  Use Search
+                </StyledButton>
+              )}
+              <Link to={`/recipe/${randomRecipe}`}>
+                <StyledButton>Surprise Me!</StyledButton>
+              </Link>
+            </ButtonArea>
+            <Counter filteredList={filteredList} recipeList={recipeList} />
+            <DropdownSort
+              filteredList={filteredList}
+              setFilteredList={setFilteredList}
+              setCurrentPage={setCurrentPage}
+            />
+            <Pagination
+              filteredList={filteredList}
+              recipesPerPage={recipesPerPage}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+            {!isSearchBarToggled && (
+              <Checkbox
+                handleToggle={handleToggle}
+                checkFilters={checkFilters}
+              />
             )}
-            <Link to={`/recipe/${randomRecipe}`}>
-              <StyledButton>Surprise Me!</StyledButton>
-            </Link>
-          </ButtonArea>
-          {isSearchBarToggled && (
-            <Search handleSearch={handleSearch} recipeList={recipeList} />
-          )}
-          {!isSearchBarToggled && (
-            <Checkbox handleToggle={handleToggle} checkFilters={checkFilters} />
-          )}
-          <Counter filteredList={filteredList} recipeList={recipeList} />
-          <DropdownSort
-            filteredList={filteredList}
-            setFilteredList={setFilteredList}
-            setCurrentPage={setCurrentPage}
-          />
-          <Pagination
-            filteredList={filteredList}
-            recipesPerPage={recipesPerPage}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-          />
-          <RecipeCards currentRecipes={currentRecipes} />
-        </>
+
+            {isSearchBarToggled && (
+              <Search handleSearch={handleSearch} recipeList={recipeList} />
+            )}
+          </LeftSide>
+          <RightSide>
+            <RecipeCards currentRecipes={currentRecipes} />
+            {filteredList.length === 0 && (
+              <NoRecipeMsg>
+                <p>No Recipes Currently Available With These Ingredients 😢</p>
+              </NoRecipeMsg>
+            )}
+          </RightSide>
+        </Wrapper>
       ) : (
         <Loader />
       )}
     </>
   );
 };
+
+const Wrapper = styled.div`
+  display: flex;
+  padding: 1rem 6rem;
+`;
+
+const LeftSide = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 20vw;
+  height: 75vh;
+  gap: 2rem;
+`;
+
+const RightSide = styled.div`
+  width: 80vw;
+  height: 75vh;
+  overflow: auto;
+`;
 
 const ButtonArea = styled.div`
   display: flex;
@@ -172,6 +211,13 @@ const StyledButton = styled.button`
   :hover {
     background: lightblue;
   }
+`;
+
+const NoRecipeMsg = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 `;
 
 export default Home;
