@@ -9,11 +9,26 @@ export const getLatLongCoordinates = async (postalCode) => {
   return latLongData;
 };
 
-export const getRestaurants = async (latLonCoordinates) => {
-  const URL = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=ramen&key=${API_KEY}&location=${latLonCoordinates}&radius=100`;
+export const getRestaurants = async (latLonCoordinates, distanceInputKM) => {
+  const distanceInMeters = Number(distanceInputKM) * 1000;
+  const URL = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=ramen&key=${API_KEY}&location=${latLonCoordinates}&radius=${distanceInMeters}`;
   const response = await fetch(proxyurl + URL);
   const data = await response.json();
   const restaurants = data.results;
 
   return restaurants;
 };
+
+export const getRestaurantDetails = async (PLACE_ID) => {
+  const URL = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${PLACE_ID}&key=${API_KEY}`;
+  const response = await fetch(proxyurl + URL);
+  const data = await response.json();
+  const restaurantDetails = data.result;
+  console.log("restaurantDetails:", restaurantDetails);
+
+  return restaurantDetails;
+};
+
+//H3G 1M8 Concordia University
+//V6B 0A6 downtown vancouver
+//10011 Empire State Building
