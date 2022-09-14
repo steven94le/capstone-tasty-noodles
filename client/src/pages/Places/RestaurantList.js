@@ -2,12 +2,14 @@ import React from "react";
 import { MdRamenDining } from "react-icons/md";
 import styled from "styled-components";
 import { useAuth0 } from "@auth0/auth0-react";
+import { getRestaurantDetails } from "../../api/getRestaurants";
 
 const RestaurantList = ({
   restaurants,
   setSaveLocationMsg,
   setCenterMapPosition,
   setActiveMarker,
+  setRestaurantDetails,
 }) => {
   const { user } = useAuth0();
 
@@ -50,6 +52,11 @@ const RestaurantList = ({
     setCenterMapPosition(newMapCenterLocation);
   };
 
+  const handleGetRestaurantDetails = (e, placeId) => {
+    e.preventDefault();
+    getRestaurantDetails(placeId).then(setRestaurantDetails);
+  };
+
   return (
     <Wrapper>
       {restaurants.map((restaurant) => {
@@ -60,6 +67,7 @@ const RestaurantList = ({
             onClick={(e) => {
               handleRedirectMapCenter(e, restaurant);
               setActiveMarker(restaurant.place_id);
+              handleGetRestaurantDetails(e, restaurant.place_id);
             }}
           >
             <StyledButton
@@ -83,16 +91,16 @@ const RestaurantList = ({
 
 const Wrapper = styled.div`
   position: relative;
+  background-color: var(--yellow);
+  height: max-content;
 
   div {
     padding: 0.5rem;
     border: 1px black solid;
-    transition: 300ms transform ease-in-out;
 
     :hover {
       box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.5);
       cursor: pointer;
-      transform: scale(1.05);
     }
   }
 `;
