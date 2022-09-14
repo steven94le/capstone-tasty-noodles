@@ -11,9 +11,11 @@ const Profile = () => {
   const { user } = useAuth0();
   const { id } = useParams();
 
+  console.log("user:", user);
   const [userInfo, setUserInfo] = useState([]);
   const { picture, name, email, handle, savedRecipes, savedLocations } =
     userInfo;
+  console.log("userInfo:", userInfo);
 
   const [members, setMembers] = useState([]);
 
@@ -62,14 +64,12 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    Promise.all([
-      getOtherUsers(id).then(setMembers),
-      getUser(id).then((data) => {
-        setUserInfo(data);
-        setRecipes(data.savedRecipes);
-        setLocations(data.savedLocations);
-      }),
-    ]);
+    getOtherUsers(id).then(setMembers);
+    getUser(id).then((data) => {
+      setUserInfo(data);
+      setRecipes(data.savedRecipes);
+      setLocations(data.savedLocations);
+    });
     setTimeout(() => setLoadingStatus("loaded"), 2500);
   }, [id]);
 
@@ -83,7 +83,6 @@ const Profile = () => {
             <img src={picture} alt="profile" />
             <div>@{handle}</div>
             <div>{name}</div>
-            <div>{email}</div>
           </Item1>
           <Item4>
             <div>Noodle Community</div>
