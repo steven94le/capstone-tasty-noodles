@@ -4,7 +4,7 @@ import {
   getLatLongCoordinates,
   getRestaurants,
 } from "../../api/getRestaurants";
-import getRamenPhotos from "../../api/getRamenPhotos";
+import getPhotos from "../../api/getPhotos";
 
 const InputArea = ({
   saveLocationMsg,
@@ -40,7 +40,7 @@ const InputArea = ({
       });
       setRestaurants(nearestRestaurantsRankedTopTen);
 
-      getRamenPhotos(city).then((data) => {
+      getPhotos(city).then((data) => {
         setBackgroundImage(data.results?.[0].urls.regular);
       });
     }

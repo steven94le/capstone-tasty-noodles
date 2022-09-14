@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import getRamenPhotos from "../../api/getRamenPhotos";
+import getPhotos from "../../api/getPhotos";
 
 const Gallery = () => {
   const [photos, setPhotos] = useState();
   const gallery = photos?.results.sort(() => 0.5 - Math.random()).slice(0, 4);
 
   useEffect(() => {
-    getRamenPhotos().then(setPhotos);
+    getPhotos("ramen").then(setPhotos);
   }, []);
 
   return (
