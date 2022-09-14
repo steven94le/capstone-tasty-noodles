@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 const Search = ({ handleSearch }) => {
   return (
@@ -15,7 +15,14 @@ const Search = ({ handleSearch }) => {
   );
 };
 
-const Wrapper = styled.div``;
+const fadeInAnimation = keyframes`
+0% {opacity: 0}
+100% {opacity: 1}
+`;
+
+const Wrapper = styled.div`
+  animation: ${fadeInAnimation} 1s;
+`;
 
 const SearchBar = styled.div`
   display: flex;

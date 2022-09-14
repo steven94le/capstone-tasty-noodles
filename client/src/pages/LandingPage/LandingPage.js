@@ -9,8 +9,8 @@ const LandingPage = () => {
       <Item1>
         <p>
           Welcome to<ObliqueFont> Tasty Noodles</ObliqueFont> 😎!
-          <br></br>A food nook on the web for <ObliqueFont>quickly</ObliqueFont>{" "}
-          finding
+          <br></br>A little food nook on the web for{" "}
+          <ObliqueFont>quickly</ObliqueFont> finding
           <ObliqueFont> tasty</ObliqueFont> noodle recipes 👀;
           <br></br>
           <ObliqueFont> Save and cook </ObliqueFont> all your favorite dishes
@@ -34,7 +34,13 @@ const LandingPage = () => {
   );
 };
 
+const fadeInAnimation = keyframes`
+0% {opacity: 0}
+100% {opacity: 1}
+`;
+
 const Container = styled.div`
+  animation: ${fadeInAnimation} 2s;
   margin: 1rem 18rem;
   gap: 1rem 3rem;
   display: grid;

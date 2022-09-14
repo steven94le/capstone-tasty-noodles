@@ -118,7 +118,7 @@ const Card = styled(Link)`
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
   transition: 300ms transform ease-in-out;
   background-color: white;
-  gap: 1rem;
+  gap: 0.5rem;
 
   :hover {
     cursor: pointer;

@@ -24,14 +24,12 @@ const Gallery = () => {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: auto;
 `;
 
 const Image = styled.img`
   width: 75px;
-  height: 100px;
+  height: auto;
   border-radius: 5px;
-
   transition: transform 400ms;
 
   :hover {

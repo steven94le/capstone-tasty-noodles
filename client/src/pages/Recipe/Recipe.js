@@ -139,7 +139,6 @@ const Row = styled.div`
 
 const StyledImage = styled.img`
   width: 25rem;
-  height: 25rem;
   height: auto;
   border-radius: var(--border-radius);
 `;

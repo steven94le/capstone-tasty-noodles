@@ -46,7 +46,15 @@ const Pagination = ({
           </StyledBtn>
         </>
       ) : (
-        <div>No Recipes Available With These Ingredients 😢</div>
+        <>
+          <StyledBtn>
+            <FiArrowLeft />
+          </StyledBtn>
+          <PageCounter>Page 0 of 0</PageCounter>
+          <StyledBtn>
+            <FiArrowRight />
+          </StyledBtn>
+        </>
       )}
     </BtnWrap>
   );
@@ -71,6 +79,7 @@ const StyledBtn = styled.button`
 
   &:hover {
     background-color: var(--blue);
+    cursor: pointer;
   }
 
   &:active {
