@@ -11,11 +11,9 @@ const Profile = () => {
   const { user } = useAuth0();
   const { id } = useParams();
 
-  console.log("user:", user);
   const [userInfo, setUserInfo] = useState([]);
   const { picture, name, email, handle, savedRecipes, savedLocations } =
     userInfo;
-  console.log("userInfo:", userInfo);
 
   const [members, setMembers] = useState([]);
 

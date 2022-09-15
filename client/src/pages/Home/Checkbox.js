@@ -19,8 +19,9 @@ const Checkbox = ({ handleToggle, checkFilters }) => {
             <StyledLabel
               htmlFor={ingredient}
               checked={checkFilters.indexOf(ingredient) === -1 ? false : true}
+              key={ingredient}
             >
-              <Ingredient key={ingredient}>
+              <Ingredient>
                 {ingredient}
                 <StyledInput
                   type="checkbox"
