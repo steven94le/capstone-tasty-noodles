@@ -12,6 +12,7 @@ const {
   handleGetOtherUsers,
   handleSaveLocation,
   handleDeleteSavedLocation,
+  handleGetRamenFacts,
 } = require("./handlers/handlers");
 
 const PORT = 8000;
@@ -41,6 +42,7 @@ express()
   .get("/recipe/:id", handleGetRecipe)
   .get("/profile/:id/other-users", handleGetOtherUsers)
   .get("/profile/:id", handleGetUser)
+  .get("/facts", handleGetRamenFacts)
 
   .post("/save-recipe", handleSaveRecipe)
   .delete("/delete-saved-recipe", handleDeleteSavedRecipe)

@@ -9,6 +9,7 @@ const {
   saveLocation,
   deleteSavedLocation,
   sendResponse,
+  getRamenFacts,
 } = require("./utils.js");
 
 /**
@@ -222,6 +223,21 @@ const handleGetOtherUsers = async (req, res) => {
   }
 };
 
+/**
+ * handler to get all the ramen facts
+ * @param {*} req
+ * @param {*} res
+ * @return {} {res, 200, facts, "Ramen facts fetch successful"}
+ */
+const handleGetRamenFacts = async (req, res) => {
+  try {
+    const facts = await getRamenFacts();
+    sendResponse(res, 200, facts, "Ramen facts fetch successful");
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   handleGetRecipes,
   handleGetRecipe,
@@ -231,4 +247,5 @@ module.exports = {
   handleDeleteSavedLocation,
   handleGetUser,
   handleGetOtherUsers,
+  handleGetRamenFacts,
 };

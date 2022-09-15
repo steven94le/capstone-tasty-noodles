@@ -1,6 +1,7 @@
 const { MongoClient } = require("mongodb");
 
-const recipes = require("./noodleRecipes.json");
+// const recipes = require("./noodleRecipes.json");
+// const facts = require("./ramenFacts.json");
 
 require("dotenv").config();
 const { MONGO_URI } = process.env;
@@ -15,7 +16,7 @@ const batchImport = async () => {
   await client.connect();
   const db = client.db("tasty-noodles");
 
-  await db.collection("recipes").insertMany(recipes);
+  await db.collection("facts").insertMany(facts);
   console.log("Success!");
   client.close();
 };

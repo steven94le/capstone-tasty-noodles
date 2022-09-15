@@ -132,6 +132,18 @@ const getOtherUsers = async (handle) => {
   }
 };
 
+const getRamenFacts = async () => {
+  try {
+    const client = await startClient();
+    const db = client.db("tasty-noodles");
+    const facts = await db.collection("facts").find().toArray();
+    client.close();
+    return facts;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const sendResponse = (res, status, data, message = "No message included") => {
   res.status(status).json({ status, data, message });
 };
@@ -146,4 +158,5 @@ module.exports = {
   saveLocation,
   deleteSavedLocation,
   sendResponse,
+  getRamenFacts,
 };
