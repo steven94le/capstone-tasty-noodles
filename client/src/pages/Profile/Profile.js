@@ -12,8 +12,7 @@ const Profile = () => {
   const { user } = useAuth0();
 
   const [userInfo, setUserInfo] = useState([]);
-  const { picture, name, email, handle, savedRecipes, savedLocations } =
-    userInfo;
+  const { picture, email, handle, savedRecipes, savedLocations } = userInfo;
 
   const isProfileLoggedUser = user.email === email;
 
@@ -62,6 +61,25 @@ const Profile = () => {
     );
   };
 
+  const handleSavePostalCode = async (e, location) => {
+    e.preventDefault();
+
+    const { address } = location;
+    let addressArr = address.split(",");
+    let cityAndPostal = addressArr[addressArr.length - 2];
+    let cityAndPostalArr = cityAndPostal.split(" ");
+    let postalCodeArr = cityAndPostalArr.splice(2);
+    let postalCode = postalCodeArr.join("");
+    navigator.clipboard
+      .writeText(postalCode)
+      .then(() => {
+        alert("Postal code copied: " + postalCode);
+      })
+      .catch((error) => {
+        alert(`Postal code copy failed: ${error}`);
+      });
+  };
+
   useEffect(() => {
     getOtherUsers(id).then(setMembers);
     getUser(id).then((data) => {
@@ -79,9 +97,14 @@ const Profile = () => {
           <Item1>
             <h1>Profile</h1>
             <hr />
-            <LoggedUserImg src={picture} alt="profile" />
-            <div>@{handle}</div>
-            <div>{name}</div>
+            <Bio>
+              <UserImg src={picture} alt="profile" />
+              <Description>
+                <p>@{handle}</p>
+                <p>Saved Recipes: {savedRecipes.length - 1}</p>
+                <p>Saved Locations: {savedLocations.length - 1}</p>
+              </Description>
+            </Bio>
           </Item1>
           <Item4>
             <h1>Noodle Community</h1>
@@ -113,21 +136,20 @@ const Profile = () => {
                     )}
                     <Thumbnail src={recipe.thumbnail} alt="thumbnail" />
                     <RecipeName>{recipe.name}</RecipeName>
-                    {isProfileLoggedUser && (
-                      <>
-                        {members.map((member) =>
-                          member.savedRecipes.map((memberSavedRecipe) => {
-                            return memberSavedRecipe.recipeId ===
-                              recipe.recipeId ? (
-                              <ActivityText>
-                                🤩 @{member.handle} saved this!
-                              </ActivityText>
-                            ) : (
-                              <></>
-                            );
-                          })
-                        )}
-                      </>
+
+                    {members?.map((member) =>
+                      member.savedRecipes.map((memberSavedRecipe, index) => {
+                        return memberSavedRecipe.recipeId ===
+                          recipe.recipeId ? (
+                          <ActivityText
+                            key={`${memberSavedRecipe.recipeId}-${index}`}
+                          >
+                            🤩 @{member.handle} saved this!
+                          </ActivityText>
+                        ) : (
+                          <></>
+                        );
+                      })
                     )}
                   </Recipe>
                 </StyledLink>
@@ -139,7 +161,12 @@ const Profile = () => {
             <hr />
             <LocationsWrapper>
               {locations?.map((location, index) => (
-                <Location key={`${location}-${index}`}>
+                <Location
+                  key={`${location}-${index}`}
+                  onClick={(e) => {
+                    handleSavePostalCode(e, location);
+                  }}
+                >
                   {user.email === email && (
                     <StyledButton
                       value={location.id}
@@ -153,20 +180,18 @@ const Profile = () => {
                   </div>
                   <br />
                   <div>{location.address}</div>
-                  {isProfileLoggedUser && (
-                    <>
-                      {members.map((member) =>
-                        member.savedLocations.map((memberSavedLocation) => {
-                          return memberSavedLocation.id === location.id ? (
-                            <ActivityText>
-                              🤩 @{member.handle} saved this!
-                            </ActivityText>
-                          ) : (
-                            <></>
-                          );
-                        })
-                      )}
-                    </>
+                  {members?.map((member) =>
+                    member.savedLocations.map((memberSavedLocation, index) => {
+                      return memberSavedLocation.id === location.id ? (
+                        <ActivityText
+                          key={`${memberSavedLocation.id}-${index}`}
+                        >
+                          🤩 @{member.handle} saved this!
+                        </ActivityText>
+                      ) : (
+                        <></>
+                      );
+                    })
                   )}
                 </Location>
               ))}
@@ -203,10 +228,6 @@ const Item = styled.div`
 
 const Item1 = styled(Item)`
   grid-area: profile;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
 `;
 
 const Item2 = styled(Item)`
@@ -228,7 +249,7 @@ const Recipes = styled.div`
   justify-content: center;
 `;
 
-const LoggedUserImg = styled.img`
+const UserImg = styled.img`
   border-radius: 50%;
 `;
 
@@ -250,10 +271,25 @@ const Recipe = styled.div`
   }
 `;
 
+const Bio = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 30px;
+`;
+
+const Description = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
 const ActivityText = styled.p`
   font-size: 13px;
   width: max-content;
   font-weight: bold;
+  color: blue;
 `;
 
 const StyledButton = styled.button`

@@ -27,8 +27,7 @@ const Members = ({ members, recipes, locations, isProfileLoggedUser }) => {
                   member.savedRecipes.filter((savedRecipe) => {
                     return loggedUserRecipeIds.includes(savedRecipe.recipeId);
                   }).length
-                }{" "}
-                🤩
+                }
               </ActivityText>
               <ActivityText>
                 Shared Saved Location:{" "}
@@ -36,8 +35,7 @@ const Members = ({ members, recipes, locations, isProfileLoggedUser }) => {
                   member.savedLocations.filter((savedLocation) => {
                     return loggedUserLocationIds.includes(savedLocation.id);
                   }).length
-                }{" "}
-                🤩
+                }
               </ActivityText>
             </>
           )}
@@ -59,7 +57,6 @@ const User = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
 `;
 
 const UserImg = styled.img`
@@ -80,6 +77,7 @@ const ActivityText = styled.p`
   font-size: 14px;
   text-align: center;
   width: 180px;
+  color: blue;
 `;
 
 export default Members;
