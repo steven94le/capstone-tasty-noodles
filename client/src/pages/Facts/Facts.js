@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import getPhotos from "../../api/getPhotos";
 import getRandomQuote from "../../api/getRandomQuote";
 import getRamenFacts from "../../api/getRamenFacts";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 const Inspo = () => {
   const [ramenPhotos, setRamenPhotos] = useState();
@@ -142,6 +142,7 @@ const TextContainer = styled.div`
   display: flex;
   justify-content: space-around;
   text-align: center;
+  font-size: 10px;
 
   div {
     margin: 20px;
@@ -149,8 +150,10 @@ const TextContainer = styled.div`
   }
 
   div > h3 {
-    font-size: 36px;
+    font-size: 32px;
     margin-bottom: 10px;
+    height: 100px;
+    width: 425px;
   }
 `;
 
@@ -165,9 +168,15 @@ const RevealDiv = styled.div`
   }
 `;
 
+const fadeInAnimation = keyframes`
+0% {opacity: 0}
+100% {opacity: 1}
+`;
+
 const Quote = styled.h3`
   font-size: 18px;
   font-style: italic;
+  animation: ${fadeInAnimation} 1.5s;
 `;
 
 const ImagesWrapper = styled.div`
@@ -178,6 +187,9 @@ const ImagesWrapper = styled.div`
 const Image = styled.img`
   transition: opacity 400ms;
   border-radius: 5px;
+
+  height: 300px;
+  width: 450px;
 
   :hover {
     opacity: 0.8;
