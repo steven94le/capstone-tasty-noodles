@@ -11,6 +11,8 @@ const InputArea = ({
   setRestaurants,
   setCenterMapPosition,
   setBackgroundImage,
+  setRestaurantDetails,
+  setSaveLocationMsg,
 }) => {
   const [postalCodeInput, setPostalCodeInput] = useState("");
   const [distanceInputKM, setDistanceInputKM] = useState("1");
@@ -39,6 +41,8 @@ const InputArea = ({
         lng: latLongData.results[0].geometry.location.lng,
       });
       setRestaurants(nearestRestaurantsRankedTopTen);
+      setRestaurantDetails("");
+      setSaveLocationMsg("");
 
       getPhotos(city).then((data) => {
         setBackgroundImage(data.results?.[0].urls.regular);
@@ -69,14 +73,14 @@ const InputArea = ({
         <option value="5">5km</option>
         <option value="10">10km</option>
       </select>
-      <button
+      <StyledButton
         onClick={() => {
           handleGetRestaurants(postalCodeInput, distanceInputKM);
         }}
       >
         Enter
-      </button>
-      {saveLocationMsg}
+      </StyledButton>
+      {saveLocationMsg && <SaveMsg>{saveLocationMsg}</SaveMsg>}
     </Wrapper>
   );
 };
@@ -84,7 +88,26 @@ const InputArea = ({
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;
-  padding: 0.25rem;
+  padding: 0.75rem;
+  gap: 0.25rem;
+`;
+
+const SaveMsg = styled.p`
+  margin: 2px 0 0 20px;
+  color: white;
+  background: var(--blue);
+  padding: 0.25rem 0.5rem;
+`;
+
+const StyledButton = styled.button`
+  color: white;
+  background: var(--blue);
+  border: none;
+  outline: none;
+
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 export default InputArea;

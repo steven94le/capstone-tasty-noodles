@@ -24,11 +24,6 @@ export const getRestaurantDetails = async (PLACE_ID) => {
   const response = await fetch(proxyurl + URL);
   const data = await response.json();
   const restaurantDetails = data.result;
-  console.log("restaurantDetails:", restaurantDetails);
 
   return restaurantDetails;
 };
-
-//H3G 1M8 Concordia University
-//V6B 0A6 downtown vancouver
-//10011 Empire State Building

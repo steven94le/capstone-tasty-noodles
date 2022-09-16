@@ -7,16 +7,16 @@ const RestaurantDetails = ({ restaurantDetails }) => {
 
   return (
     <Wrapper>
-      {sortedReviewsByDate.map((review) => (
-        <div>
-          <div>
-            {review.author_name} ({review.rating}/5) -{" "}
-            {review.relative_time_description}
-          </div>
-          <div></div>
-          <div>{review.text}</div>
+      <StyledHeader>Restaurant Reviews</StyledHeader>
+      {sortedReviewsByDate.map((review, index) => (
+        <Review key={`${review}-${index}`}>
+          <ReviewAuthor>
+            🍜 {review.author_name} ({review.rating}/5) -{" "}
+            {review.relative_time_description} 🍜
+          </ReviewAuthor>
+          <ReviewText>{review.text}</ReviewText>
           <br />
-        </div>
+        </Review>
       ))}
     </Wrapper>
   );
@@ -24,12 +24,28 @@ const RestaurantDetails = ({ restaurantDetails }) => {
 
 const Wrapper = styled.div`
   width: 400px;
-  height: max-content;
+  height: 60vh;
   background-color: var(--yellow);
   font-size: 15px;
   overflow: auto;
-  height: 500px;
   padding: 15px;
+`;
+
+const StyledHeader = styled.h1`
+  font-size: 26px;
+  margin-bottom: 15px;
+  text-decoration: underline;
+`;
+
+const Review = styled.div``;
+
+const ReviewAuthor = styled.p`
+  font-size: 16px;
+  font-weight: bold;
+`;
+
+const ReviewText = styled.p`
+  font-size: 14px;
 `;
 
 export default RestaurantDetails;

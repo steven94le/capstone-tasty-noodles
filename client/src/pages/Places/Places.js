@@ -26,7 +26,7 @@ const Places = () => {
 
   return (
     isLoaded && (
-      <div
+      <Wrapper
         style={{
           backgroundImage: `url(${backgroundImage})`,
           backgroundRepeat: "no-repeat",
@@ -34,14 +34,14 @@ const Places = () => {
           backgroundSize: "cover",
         }}
       >
-        <StyledHeader>
-          <span>Top Rated Ramen Restaurants Near You! 🍜 </span>
-        </StyledHeader>
+        <StyledHeader>Top Rated Ramen Restaurants Near You! 🍜</StyledHeader>
         <InputArea
           saveLocationMsg={saveLocationMsg}
           setRestaurants={setRestaurants}
           setCenterMapPosition={setCenterMapPosition}
           setBackgroundImage={setBackgroundImage}
+          setRestaurantDetails={setRestaurantDetails}
+          setSaveLocationMsg={setSaveLocationMsg}
         />
         {!restaurants && (
           <StyledImg>
@@ -69,18 +69,25 @@ const Places = () => {
             )}
           </GoogleWrapper>
         )}
-      </div>
+      </Wrapper>
     )
   );
 };
 
-const StyledHeader = styled.div`
+const Wrapper = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  height: 78vh;
+`;
+
+const StyledHeader = styled.div`
   padding: 1rem;
-  font-size: 28px;
-  color: white;
+  font-size: 24px;
+  color: black;
+  display: flex;
+  justify-content: center;
+  background: var(--off-white);
 `;
 
 const GoogleWrapper = styled.div`

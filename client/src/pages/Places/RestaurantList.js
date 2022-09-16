@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getRestaurantDetails } from "../../api/getRestaurants";
 
+import { BiBookmark } from "react-icons/bi";
+
 const RestaurantList = ({
   restaurants,
   setSaveLocationMsg,
@@ -54,6 +56,8 @@ const RestaurantList = ({
 
   const handleGetRestaurantDetails = (e, placeId) => {
     e.preventDefault();
+    setRestaurantDetails("");
+    setSaveLocationMsg("");
     getRestaurantDetails(placeId).then(setRestaurantDetails);
   };
 
@@ -75,7 +79,7 @@ const RestaurantList = ({
                 handleSaveLocation(e, restaurant);
               }}
             >
-              Save
+              <BiBookmark />
             </StyledButton>
             <MdRamenDining />
             <span>
@@ -93,6 +97,8 @@ const Wrapper = styled.div`
   position: relative;
   background-color: var(--yellow);
   height: max-content;
+  height: 60vh;
+  overflow: auto;
 
   div {
     padding: 0.5rem;
@@ -100,7 +106,6 @@ const Wrapper = styled.div`
 
     :hover {
       box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.5);
-      cursor: pointer;
     }
   }
 `;
@@ -109,6 +114,10 @@ const StyledButton = styled.button`
   position: absolute;
   right: 0;
   margin-right: 10px;
+  background: lightblue;
+  border: none;
+  outline: none;
+  border-radius: 5px;
 
   :hover {
     cursor: pointer;
