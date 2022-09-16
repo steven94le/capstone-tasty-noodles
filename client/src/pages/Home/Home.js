@@ -182,8 +182,10 @@ const LeftSide = styled.div`
   display: flex;
   flex-direction: column;
   width: 20vw;
-  height: 75vh;
+  height: max-content;
   gap: 2rem;
+  padding: 0.2rem;
+  background: var(--off-white);
 `;
 
 const RightSide = styled.div`

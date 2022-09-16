@@ -5,7 +5,8 @@ const Counter = ({ filteredList, recipeList }) => {
   return (
     <Wrapper>
       <p>
-        {filteredList?.length} of {recipeList?.length} recipes
+        🍜
+        {filteredList?.length} of {recipeList?.length} recipes 🍜
       </p>
     </Wrapper>
   );

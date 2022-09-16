@@ -11,9 +11,9 @@ const LandingPage = () => {
           Welcome to<ObliqueFont> Tasty Noodles</ObliqueFont> 😎!
           <br></br>A little food nook on the web for{" "}
           <ObliqueFont>quickly</ObliqueFont> finding
-          <ObliqueFont> tasty</ObliqueFont> noodle recipes 👀;
+          <ObliqueFont> tasty</ObliqueFont> noodle dishes 👀;
           <br></br>
-          <ObliqueFont> Save and cook </ObliqueFont> all your favorite dishes
+          <ObliqueFont> Discover and save </ObliqueFont> all your favorite meals
           ✌.
         </p>
       </Item1>

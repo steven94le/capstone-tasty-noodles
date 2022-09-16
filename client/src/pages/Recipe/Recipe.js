@@ -21,6 +21,7 @@ const Recipe = () => {
   const [saveRecipeMsg, setSaveRecipeMsg] = useState("");
   const { recipeList } = useContext(RecipeListContext);
   const [similarRecipes, setSimilarRecipes] = useState();
+  const [isSaved, setIsSaved] = useState(false);
 
   const { name, thumbnail } = recipe;
 
@@ -46,6 +47,8 @@ const Recipe = () => {
       }),
     });
 
+    setIsSaved(true);
+
     const data = await response.json();
     const recipeSaved = data.data;
 
@@ -63,6 +66,7 @@ const Recipe = () => {
         setSimilarRecipes(
           recipeList.sort(() => 0.5 - Math.random()).slice(0, 5)
         );
+        setIsSaved(false);
         setTimeout(() => setLoadingStatus("loaded"), 1000);
       } catch (err) {
         console.log(err);
@@ -76,8 +80,10 @@ const Recipe = () => {
         <Wrapper>
           <StyledHeader>
             <RecipeName>{name}</RecipeName>
-            <SaveButton onClick={handleSaveRecipe}>Save Recipe</SaveButton>
-            {saveRecipeMsg}
+            {!isSaved && (
+              <SaveButton onClick={handleSaveRecipe}>Save Recipe</SaveButton>
+            )}
+            {isSaved && saveRecipeMsg}
           </StyledHeader>
           <Description recipe={recipe} />
           <hr />

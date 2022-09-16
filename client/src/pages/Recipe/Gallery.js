@@ -24,11 +24,12 @@ const Gallery = () => {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 `;
 
 const Image = styled.img`
-  width: 75px;
-  height: auto;
+  width: 100px;
+  height: 100px;
   border-radius: 5px;
   transition: transform 400ms;
 

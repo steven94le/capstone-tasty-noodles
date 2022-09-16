@@ -7,9 +7,6 @@ import {
   IoFastFoodOutline,
   IoTimerOutline,
   IoList,
-  IoHappyOutline,
-  IoSadOutline,
-  IoMedalOutline,
 } from "react-icons/io5";
 
 const RecipeCards = ({ currentRecipes }) => {
@@ -39,10 +36,8 @@ const RecipeCards = ({ currentRecipes }) => {
                   userRatings.score >= 0.9 ? (
                     <Rating>
                       <span>
-                        Rating: {Math.round(userRatings.score * 100) + "%"}
+                        Rating: {Math.round(userRatings.score * 100) + "%"} 🤩
                       </span>
-                      <IoHappyOutline />
-                      <IoMedalOutline />
                     </Rating>
                   ) : (
                     <Rating>
@@ -53,8 +48,7 @@ const RecipeCards = ({ currentRecipes }) => {
                   )
                 ) : (
                   <Rating>
-                    <span>Rating: N/A</span>
-                    <IoSadOutline />
+                    <span>Rating: N/A</span> 😕
                   </Rating>
                 )}
                 <InfoGroup>
@@ -123,7 +117,7 @@ const Card = styled(Link)`
   :hover {
     cursor: pointer;
     border: 0.5px solid lightgrey;
-    transform: scale(1.1);
+    transform: scale(1.05);
     box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.5);
   }
 `;
@@ -131,7 +125,7 @@ const Card = styled(Link)`
 const RecipeHeader = styled.div`
   p {
     font-weight: bold;
-    font-size: 17px;
+    font-size: 16px;
   }
 `;
 

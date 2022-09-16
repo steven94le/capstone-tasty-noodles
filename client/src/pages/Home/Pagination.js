@@ -76,6 +76,8 @@ const StyledBtn = styled.button`
   align-items: center;
   justify-content: center;
   margin: 3px;
+  border: 1px blue solid;
+  border-radius: 5px;
 
   &:hover {
     background-color: var(--blue);

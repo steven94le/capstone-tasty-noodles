@@ -136,29 +136,47 @@ const DropdownSort = ({ filteredList, setFilteredList, setCurrentPage }) => {
 
   return (
     <Wrapper>
-      <p>Sort Recipes</p>
-      <select name="sort" onChange={handleSortOption} defaultValue="">
-        <option disabled value="">
-          Select
-        </option>
-        <option value="lowToHighIngredients">Least Ingredients To Most</option>
-        <option value="highToLowIngredients">Most Ingredients To Least</option>
-        <option value="lowToHighCalories">Least Calories To Most</option>
-        <option value="highToLowCalories">Most Calories To Least</option>
-        <option value="lowToHighTime">Least Time To Most</option>
-        <option value="highToLowTime">Most Time To Least</option>
-        <option value="lowToHighRating">Lowest Rating To Highest</option>
-        <option value="highToLowRating">Highest Rating To Lowest</option>
-      </select>
+      <div>
+        <p>Sort Recipes</p>
+      </div>
+      <div>
+        <StyledSelect name="sort" onChange={handleSortOption} defaultValue="">
+          <option disabled value="">
+            Select Sort Option
+          </option>
+          <option value="lowToHighIngredients">
+            Least Ingredients To Most
+          </option>
+          <option value="highToLowIngredients">
+            Most Ingredients To Least
+          </option>
+          <option value="lowToHighCalories">Least Calories To Most</option>
+          <option value="highToLowCalories">Most Calories To Least</option>
+          <option value="lowToHighTime">Least Time To Most</option>
+          <option value="highToLowTime">Most Time To Least</option>
+          <option value="lowToHighRating">Lowest Rating To Highest</option>
+          <option value="highToLowRating">Highest Rating To Lowest</option>
+        </StyledSelect>
+      </div>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  margin: 1rem;
+  align-items: center;
   gap: 1rem;
+`;
+
+const StyledSelect = styled.select`
+  width: 200px;
+  height: 25px;
+  text-align: center;
+
+  background: var(--blue);
+  color: white;
 `;
 
 export default DropdownSort;

@@ -47,6 +47,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   animation: ${fadeInAnimation} 1s;
+
   div {
     padding: 0.25rem;
   }
@@ -75,7 +76,7 @@ const Ingredient = styled.div`
 
 const StyledLabel = styled.label`
   text-align: center;
-  border: 0.1px solid grey;
+  border: 0.1px solid blue;
   border-radius: 5px;
   background: ${({ checked }) => (checked ? "var(--blue)" : "")};
   color: ${({ checked }) => (checked ? "white" : "")};
@@ -83,8 +84,7 @@ const StyledLabel = styled.label`
 
   :hover {
     cursor: pointer;
-    background: ${({ checked }) =>
-      checked ? "var(--blue)" : "var(--off-white)"};
+    background: ${({ checked }) => (checked ? "lightblue" : "lightgrey")};
     transition: background 0.1s linear;
   }
 `;
