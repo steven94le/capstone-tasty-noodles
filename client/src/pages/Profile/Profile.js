@@ -8,15 +8,16 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Loader from "../../components/Loader";
 
 const Profile = () => {
-  const { user } = useAuth0();
   const { id } = useParams();
+  const { user } = useAuth0();
 
   const [userInfo, setUserInfo] = useState([]);
   const { picture, name, email, handle, savedRecipes, savedLocations } =
     userInfo;
 
-  const [members, setMembers] = useState([]);
+  const isProfileLoggedUser = user.email === email;
 
+  const [members, setMembers] = useState([]);
   const [recipes, setRecipes] = useState(savedRecipes);
   const [locations, setLocations] = useState(savedLocations);
   const [loadingStatus, setLoadingStatus] = useState("loading");
@@ -76,19 +77,24 @@ const Profile = () => {
       {loadingStatus === "loaded" ? (
         <Container>
           <Item1>
-            <div>Profile</div>
+            <h1>Profile</h1>
             <hr />
-            <img src={picture} alt="profile" />
+            <LoggedUserImg src={picture} alt="profile" />
             <div>@{handle}</div>
             <div>{name}</div>
           </Item1>
           <Item4>
-            <div>Noodle Community</div>
+            <h1>Noodle Community</h1>
             <hr />
-            <Members members={members} />
+            <Members
+              members={members}
+              recipes={recipes}
+              locations={locations}
+              isProfileLoggedUser={isProfileLoggedUser}
+            />
           </Item4>
           <Item2>
-            <div>Saved Recipes ({recipes?.length})</div>
+            <h1>Saved Recipes ({recipes?.length})</h1>
             <hr />
             <Recipes>
               {recipes?.map((recipe, index) => (
@@ -107,13 +113,29 @@ const Profile = () => {
                     )}
                     <Thumbnail src={recipe.thumbnail} alt="thumbnail" />
                     <RecipeName>{recipe.name}</RecipeName>
+                    {isProfileLoggedUser && (
+                      <>
+                        {members.map((member) =>
+                          member.savedRecipes.map((memberSavedRecipe) => {
+                            return memberSavedRecipe.recipeId ===
+                              recipe.recipeId ? (
+                              <ActivityText>
+                                🤩 @{member.handle} saved this!
+                              </ActivityText>
+                            ) : (
+                              <></>
+                            );
+                          })
+                        )}
+                      </>
+                    )}
                   </Recipe>
                 </StyledLink>
               ))}
             </Recipes>
           </Item2>
           <Item3>
-            <div>Saved Locations ({locations?.length})</div>
+            <h1>Saved Locations ({locations?.length})</h1>
             <hr />
             <LocationsWrapper>
               {locations?.map((location, index) => (
@@ -129,7 +151,23 @@ const Profile = () => {
                   <div>
                     {location.name} ({location.rating}/5)
                   </div>
+                  <br />
                   <div>{location.address}</div>
+                  {isProfileLoggedUser && (
+                    <>
+                      {members.map((member) =>
+                        member.savedLocations.map((memberSavedLocation) => {
+                          return memberSavedLocation.id === location.id ? (
+                            <ActivityText>
+                              🤩 @{member.handle} saved this!
+                            </ActivityText>
+                          ) : (
+                            <></>
+                          );
+                        })
+                      )}
+                    </>
+                  )}
                 </Location>
               ))}
             </LocationsWrapper>
@@ -150,20 +188,25 @@ const Container = styled.div`
   grid-auto-rows: minmax(200px, auto);
   grid-gap: 20px;
   grid-template-areas:
-    "profile X X"
-    "recipe recipe recipe"
-    "location location location";
+    "profile X X X"
+    "recipe recipe recipe recipe"
+    "location location location location";
 `;
 
 const Item = styled.div`
-  padding: 20px;
+  padding: 25px;
   border: 1px black solid;
   border-radius: var(--border-radius);
   box-shadow: 0 2px 5px 0px rgba(0, 0, 0, 0.2);
+  background: var(--grey-gradient);
 `;
 
 const Item1 = styled(Item)`
   grid-area: profile;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 `;
 
 const Item2 = styled(Item)`
@@ -182,13 +225,18 @@ const Recipes = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 1.25rem;
+  justify-content: center;
+`;
+
+const LoggedUserImg = styled.img`
+  border-radius: 50%;
 `;
 
 const Recipe = styled.div`
   position: relative;
   border: 1px black solid;
-  max-width: 200px;
-  max-height: 200px;
+  max-width: 250px;
+  max-height: 250px;
   border-radius: var(--border-radius);
   background: var(--off-white);
   padding: 10px;
@@ -202,10 +250,18 @@ const Recipe = styled.div`
   }
 `;
 
+const ActivityText = styled.p`
+  font-size: 13px;
+  width: max-content;
+  font-weight: bold;
+`;
+
 const StyledButton = styled.button`
   position: absolute;
   right: 0;
   margin-right: 10px;
+  width: 25px;
+  height: 25px;
 
   :hover {
     cursor: pointer;
@@ -217,12 +273,12 @@ const StyledLink = styled(Link)`
 `;
 
 const Thumbnail = styled.img`
-  height: 150px;
-  width: 150px;
+  height: 175px;
+  width: 175px;
 `;
 
 const RecipeName = styled.div`
-  font-size: 12px;
+  font-size: 14px;
   max-width: 150px;
   max-height: 150px;
   white-space: nowrap;
@@ -233,14 +289,16 @@ const RecipeName = styled.div`
 
 const LocationsWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1rem;
 `;
 
 const Location = styled.div`
   position: relative;
   border: 1px black solid;
-  width: 250px;
-  height: 75px;
+  width: 275px;
+  height: 125px;
   border-radius: var(--border-radius);
   background: var(--off-white);
   padding: 10px;
