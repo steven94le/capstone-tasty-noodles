@@ -12,36 +12,40 @@ const Members = ({ members, recipes, locations, isProfileLoggedUser }) => {
   });
 
   return (
-    <Wrapper>
-      {members?.map((member) => (
-        <User key={member.email}>
-          <Link to={`/profile/${member.handle}`}>
-            <UserImg src={member.picture} alt="member" />
-          </Link>
-          <UserName>@{member.handle}</UserName>
-          {isProfileLoggedUser && (
-            <>
-              <ActivityText>
-                Shared Saved Recipes:{" "}
-                {
-                  member.savedRecipes.filter((savedRecipe) => {
-                    return loggedUserRecipeIds.includes(savedRecipe.recipeId);
-                  }).length
-                }
-              </ActivityText>
-              <ActivityText>
-                Shared Saved Location:{" "}
-                {
-                  member.savedLocations.filter((savedLocation) => {
-                    return loggedUserLocationIds.includes(savedLocation.id);
-                  }).length
-                }
-              </ActivityText>
-            </>
-          )}
-        </User>
-      ))}
-    </Wrapper>
+    <>
+      <h1>Noodle Community</h1>
+      <hr />
+      <Wrapper>
+        {members?.map((member) => (
+          <User key={member.email}>
+            <Link to={`/profile/${member.handle}`}>
+              <UserImg src={member.picture} alt="member" />
+            </Link>
+            <UserName>@{member.handle}</UserName>
+            {isProfileLoggedUser && (
+              <>
+                <ActivityText>
+                  Shared Saved Recipes:{" "}
+                  {
+                    member.savedRecipes.filter((savedRecipe) => {
+                      return loggedUserRecipeIds.includes(savedRecipe.recipeId);
+                    }).length
+                  }
+                </ActivityText>
+                <ActivityText>
+                  Shared Saved Location:{" "}
+                  {
+                    member.savedLocations.filter((savedLocation) => {
+                      return loggedUserLocationIds.includes(savedLocation.id);
+                    }).length
+                  }
+                </ActivityText>
+              </>
+            )}
+          </User>
+        ))}
+      </Wrapper>
+    </>
   );
 };
 
