@@ -15,6 +15,7 @@ const SavedLocations = ({
   const savedLocationsCount = locations?.length;
   const [isLocationSaved, setLocationIsSaved] = useState(false);
 
+  //only logged-in user will be able to remove their own saved locations
   const handleRemoveSavedLocation = async (e) => {
     e.stopPropagation();
     e.preventDefault();
@@ -37,6 +38,7 @@ const SavedLocations = ({
     );
   };
 
+  //if saved locaiton is clicked, the postal code of that location will be saved via built-in navigator clipboard api
   const handleSavePostalCode = async (e, location) => {
     e.preventDefault();
 
@@ -56,6 +58,7 @@ const SavedLocations = ({
       });
   };
 
+  //quick search for saved locations
   const handleSearch = (e) => {
     e.preventDefault();
     const value = e.target.value.toLowerCase();
@@ -77,6 +80,7 @@ const SavedLocations = ({
       : setLocations(filteredSavedLocations);
   };
 
+  //logged-in user can save locations seen on other profile pages
   const handleSaveLocation = async (e, location) => {
     e.stopPropagation();
     e.preventDefault();

@@ -14,6 +14,7 @@ const Places = () => {
   const [libraries] = useState(["places"]);
   const [centerMapPosition, setCenterMapPosition] = useState({});
 
+  //loads google map and the places library
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: API_KEY,
     libraries,

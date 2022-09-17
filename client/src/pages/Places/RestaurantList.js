@@ -49,12 +49,14 @@ const RestaurantList = ({
     }
   };
 
+  //redirects map when a new restaurant is clicked
   const handleRedirectMapCenter = (e, restaurant) => {
     e.preventDefault();
     const newMapCenterLocation = restaurant?.geometry?.location;
     setCenterMapPosition(newMapCenterLocation);
   };
 
+  //get restuarant reviews when a user clicks on a particular restaurant from list
   const handleGetRestaurantDetails = (e, placeId) => {
     e.preventDefault();
     setRestaurantDetails("");

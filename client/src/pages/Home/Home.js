@@ -37,6 +37,7 @@ const Home = () => {
 
   const randomRecipe = recipeIds.sort(() => 0.5 - Math.random())[0];
 
+  //takes search input, breaks it into key words, and filters recipes if name contains key word
   const handleSearch = (ev) => {
     ev.preventDefault();
     const value = ev.target.value.toLowerCase();
@@ -55,6 +56,7 @@ const Home = () => {
       : setFilteredList(filteredRecipes);
   };
 
+  //check if filter option is currently in array of executed filter options, add/remove accordingly
   const handleToggle = (ev) => {
     const value = ev.target.value;
     const idx = checkFilters.indexOf(value);
@@ -70,6 +72,7 @@ const Home = () => {
     handleCheckedFilters(newFilters);
   };
 
+  //go through filter option and see if it's mentioned in each recipe's ingredient list, then filter recipes
   const handleCheckedFilters = (filters) => {
     const filteredRecipes = recipeList.filter((recipe) => {
       return filters.every((filter) => {

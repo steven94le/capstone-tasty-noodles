@@ -24,6 +24,7 @@ const Profile = () => {
   const [saveLocationMsg, setSaveLocationMsg] = useState("");
 
   useEffect(() => {
+    //get data for the other non-logged-in users
     getOtherUsers(id).then((data) => {
       try {
         setMembers(data);
@@ -32,6 +33,7 @@ const Profile = () => {
       }
     });
 
+    //get user data based on id param
     getUser(id).then((data) => {
       try {
         setUserInfo(data);

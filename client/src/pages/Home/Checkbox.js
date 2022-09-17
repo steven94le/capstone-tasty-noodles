@@ -7,6 +7,7 @@ const labels = {
   Others: ["Soy Sauce", "Fish Sauce", "Sesame Oil", "Rice Vinegar", "Sriracha"],
 };
 
+//label headers
 const labelKeys = Object.keys(labels);
 
 const Checkbox = ({ handleToggle, checkFilters }) => {

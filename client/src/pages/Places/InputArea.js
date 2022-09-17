@@ -17,8 +17,12 @@ const InputArea = ({
   const [postalCodeInput, setPostalCodeInput] = useState("");
   const [distanceInputKM, setDistanceInputKM] = useState("1");
 
+  //get nearby restaurants, via google places api, with postal code and distance inputs
   const handleGetRestaurants = async (postalCodeInput, distanceInputKM) => {
+    //google places api takes in lat and long coordinates as input; convert postal code to lat and long
     const latLongData = await getLatLongCoordinates(postalCodeInput);
+
+    //extracting city information from the returned lat long data
     const city = latLongData.results[0]?.formatted_address.split(",")[0];
 
     if (latLongData.results.length === 0) {
@@ -30,10 +34,12 @@ const InputArea = ({
         distanceInputKM
       );
 
+      //return restaurants sorted from best rating to lowest
       const nearestRestaurantsRanked = nearestRestaurants
         .filter((restaurant) => restaurant.rating)
         .sort((a, b) => (a.rating > b.rating ? -1 : 1));
 
+      //return only the top 10 restaurants given the area
       const nearestRestaurantsRankedTopTen = nearestRestaurantsRanked.slice(10);
 
       setCenterMapPosition({
@@ -44,6 +50,7 @@ const InputArea = ({
       setRestaurantDetails("");
       setSaveLocationMsg("");
 
+      //based on postal code (city) input, change background image via unsplash api
       getPhotos(city).then((data) => {
         try {
           setBackgroundImage(data.results?.[0].urls.regular);

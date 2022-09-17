@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 const Members = ({ members, recipes, locations, isProfileLoggedUser }) => {
+  //saved recipes and locations ids for the sign-in user
   const loggedUserRecipeIds = recipes?.map((recipe) => {
     return recipe.recipeId;
   });

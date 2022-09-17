@@ -16,6 +16,7 @@ const SavedRecipes = ({
   const savedRecipesCount = recipes?.length;
   const [isRecipeSaved, setRecipeIsSaved] = useState(false);
 
+  //only logged-in user will be able to remove their own saved recipes
   const handleRemoveSavedRecipe = async (e) => {
     e.preventDefault();
     const deletedRecipeId = e.target.value;
@@ -35,6 +36,7 @@ const SavedRecipes = ({
     setRecipes(recipes.filter((recipe) => recipe.recipeId !== deletedRecipeId));
   };
 
+  //quick search for saved locations
   const handleSearch = (e) => {
     e.preventDefault();
     const value = e.target.value.toLowerCase();
@@ -51,6 +53,7 @@ const SavedRecipes = ({
     value === "" ? setRecipes(savedRecipes) : setRecipes(filteredSavedRecipes);
   };
 
+  //logged-in user can save recipes seen on other profile pages
   const handleSaveRecipe = async (e, recipe) => {
     e.preventDefault();
     const { recipeId, name, thumbnail } = recipe;

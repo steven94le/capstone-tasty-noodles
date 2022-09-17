@@ -3,6 +3,8 @@ import styled from "styled-components";
 
 const RestaurantDetails = ({ restaurantDetails }) => {
   const { reviews } = restaurantDetails;
+
+  //sort reviews from most recent to least
   const sortedReviewsByDate = reviews.sort((a, b) => b.time - a.time);
 
   return (
