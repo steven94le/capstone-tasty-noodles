@@ -17,6 +17,7 @@ const RestaurantList = ({
 
   const handleSaveLocation = async (e, restaurant) => {
     e.preventDefault();
+    e.stopPropagation();
 
     if (!user) {
       alert("User must log in to save location!");
@@ -106,6 +107,7 @@ const Wrapper = styled.div`
 
     :hover {
       box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.5);
+      cursor: pointer;
     }
   }
 `;

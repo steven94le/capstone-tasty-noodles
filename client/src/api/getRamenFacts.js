@@ -1,3 +1,4 @@
+//fetch ramen facts from the server
 export const getRamenFacts = async () => {
   const response = await fetch("/facts");
   const { data: facts } = await response.json();

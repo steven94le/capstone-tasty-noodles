@@ -7,7 +7,13 @@ const Gallery = () => {
   const gallery = photos?.results.sort(() => 0.5 - Math.random()).slice(0, 4);
 
   useEffect(() => {
-    getPhotos("ramen").then(setPhotos);
+    getPhotos("ramen").then((data) => {
+      try {
+        setPhotos(data);
+      } catch (err) {
+        console.log(err);
+      }
+    });
   }, []);
 
   return (

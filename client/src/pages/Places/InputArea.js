@@ -45,7 +45,11 @@ const InputArea = ({
       setSaveLocationMsg("");
 
       getPhotos(city).then((data) => {
-        setBackgroundImage(data.results?.[0].urls.regular);
+        try {
+          setBackgroundImage(data.results?.[0].urls.regular);
+        } catch (err) {
+          console.log(err);
+        }
       });
     }
   };

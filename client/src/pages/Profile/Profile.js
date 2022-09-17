@@ -24,14 +24,26 @@ const Profile = () => {
   const [saveLocationMsg, setSaveLocationMsg] = useState("");
 
   useEffect(() => {
-    getOtherUsers(id).then(setMembers);
-    getUser(id).then((data) => {
-      setUserInfo(data);
-      setRecipes(data.savedRecipes);
-      setLocations(data.savedLocations);
-      setSaveRecipeMsg("");
-      setSaveLocationMsg("");
+    getOtherUsers(id).then((data) => {
+      try {
+        setMembers(data);
+      } catch (err) {
+        console.log(err);
+      }
     });
+
+    getUser(id).then((data) => {
+      try {
+        setUserInfo(data);
+        setRecipes(data.savedRecipes);
+        setLocations(data.savedLocations);
+        setSaveRecipeMsg("");
+        setSaveLocationMsg("");
+      } catch (err) {
+        console.log(err);
+      }
+    });
+
     setTimeout(() => setLoadingStatus("loaded"), 2500);
   }, [id, saveRecipeMsg, saveLocationMsg]);
 

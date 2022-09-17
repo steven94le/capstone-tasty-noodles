@@ -1,3 +1,4 @@
+//fetch all recipes from server
 export const getRecipes = async () => {
   const response = await fetch("/recipes");
   const { data: recipes } = await response.json();

@@ -1,3 +1,4 @@
+//fetch landscape photos from unsplash given a query
 const API_KEY = process.env.REACT_APP_UNSPLASH_API_KEY;
 const BASE_UNSPLASH_API_URL = "https://api.unsplash.com/search/photos/?page=1";
 

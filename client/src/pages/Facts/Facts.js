@@ -20,9 +20,15 @@ const Inspo = () => {
   revealSection();
 
   useEffect(() => {
-    getPhotos("ramen").then(setRamenPhotos);
-    getRandomQuote().then(setRandomQuote);
-    getRamenFacts().then(setRamenFacts);
+    getPhotos("ramen").then((data) => {
+      try {
+        setRamenPhotos(data);
+        getRandomQuote().then(setRandomQuote);
+        getRamenFacts().then(setRamenFacts);
+      } catch (err) {
+        console.log(err);
+      }
+    });
   }, []);
 
   return (
