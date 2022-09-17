@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
@@ -8,9 +8,13 @@ const SavedRecipes = ({
   recipes,
   setRecipes,
   isProfileLoggedUser,
+  user,
+  saveRecipeMsg,
+  setSaveRecipeMsg,
 }) => {
   const { handle, savedRecipes } = userInfo;
   const savedRecipesCount = recipes?.length;
+  const [isRecipeSaved, setRecipeIsSaved] = useState(false);
 
   const handleRemoveSavedRecipe = async (e) => {
     e.preventDefault();
@@ -31,9 +35,9 @@ const SavedRecipes = ({
     setRecipes(recipes.filter((recipe) => recipe.recipeId !== deletedRecipeId));
   };
 
-  const handleSearch = (ev) => {
-    ev.preventDefault();
-    const value = ev.target.value.toLowerCase();
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const value = e.target.value.toLowerCase();
 
     const searchKeys = value.split(" ").filter((searchKey) => {
       return searchKey !== "";
@@ -47,6 +51,41 @@ const SavedRecipes = ({
     value === "" ? setRecipes(savedRecipes) : setRecipes(filteredSavedRecipes);
   };
 
+  const handleSaveRecipe = async (e, recipe) => {
+    e.preventDefault();
+    const { recipeId, name, thumbnail } = recipe;
+
+    if (!user) {
+      alert("Must log in to save recipe!");
+      return;
+    }
+
+    const response = await fetch("/save-recipe", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: user.email.toLowerCase(),
+        handle: user.nickname,
+        recipeId: recipeId,
+        name: name,
+        thumbnail: thumbnail,
+      }),
+    });
+
+    setRecipeIsSaved(true);
+
+    const data = await response.json();
+    const recipeSaved = data.data;
+
+    if (!recipeSaved) {
+      setSaveRecipeMsg(data.message);
+    } else {
+      setSaveRecipeMsg(data.message);
+    }
+  };
+
   return (
     <Wrapper>
       <h1>Saved Recipes ({savedRecipesCount})</h1>{" "}
@@ -55,17 +94,22 @@ const SavedRecipes = ({
         placeholder="Search recipe name"
         onChange={handleSearch}
       />
+      {isRecipeSaved && saveRecipeMsg}
       <hr />
       {recipes?.map((recipe) => (
         <StyledLink to={`/recipe/${recipe.recipeId}`} key={recipe.recipeId}>
           <Recipe>
-            {isProfileLoggedUser && (
+            {isProfileLoggedUser ? (
               <StyledButton
                 value={recipe.recipeId}
                 onClick={handleRemoveSavedRecipe}
               >
                 X
               </StyledButton>
+            ) : (
+              <SaveButton onClick={(e) => handleSaveRecipe(e, recipe)}>
+                Save
+              </SaveButton>
             )}
             <Thumbnail src={recipe.thumbnail} alt="thumbnail" />
             <RecipeName>{recipe.name}</RecipeName>
@@ -152,6 +196,23 @@ const StyledButton = styled.button`
 
   :hover {
     cursor: pointer;
+  }
+`;
+
+const SaveButton = styled.button`
+  position: absolute;
+  right: 10px;
+  font-size: 14px;
+  background: var(--blue);
+  color: white;
+  border: none;
+  outline: none;
+  padding: 5px 8px;
+  border-radius: 10px;
+  cursor: pointer;
+
+  :hover {
+    background: lightblue;
   }
 `;
 

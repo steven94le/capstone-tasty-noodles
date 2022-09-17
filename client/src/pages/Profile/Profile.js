@@ -20,6 +20,8 @@ const Profile = () => {
   const [recipes, setRecipes] = useState(savedRecipes);
   const [locations, setLocations] = useState(savedLocations);
   const [loadingStatus, setLoadingStatus] = useState("loading");
+  const [saveRecipeMsg, setSaveRecipeMsg] = useState("");
+  const [saveLocationMsg, setSaveLocationMsg] = useState("");
 
   useEffect(() => {
     getOtherUsers(id).then(setMembers);
@@ -27,9 +29,11 @@ const Profile = () => {
       setUserInfo(data);
       setRecipes(data.savedRecipes);
       setLocations(data.savedLocations);
+      setSaveRecipeMsg("");
+      setSaveLocationMsg("");
     });
     setTimeout(() => setLoadingStatus("loaded"), 2500);
-  }, [id]);
+  }, [id, saveRecipeMsg, saveLocationMsg]);
 
   return (
     <>
@@ -53,6 +57,9 @@ const Profile = () => {
               recipes={recipes}
               setRecipes={setRecipes}
               isProfileLoggedUser={isProfileLoggedUser}
+              user={user}
+              saveRecipeMsg={saveRecipeMsg}
+              setSaveRecipeMsg={setSaveRecipeMsg}
             />
           </Item2>
           <Item3>
@@ -62,6 +69,9 @@ const Profile = () => {
               setLocations={setLocations}
               isProfileLoggedUser={isProfileLoggedUser}
               members={members}
+              user={user}
+              saveLocationMsg={saveLocationMsg}
+              setSaveLocationMsg={setSaveLocationMsg}
             />
           </Item3>
         </Container>

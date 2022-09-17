@@ -3,11 +3,11 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 const Members = ({ members, recipes, locations, isProfileLoggedUser }) => {
-  const loggedUserRecipeIds = recipes.map((recipe) => {
+  const loggedUserRecipeIds = recipes?.map((recipe) => {
     return recipe.recipeId;
   });
 
-  const loggedUserLocationIds = locations.map((location) => {
+  const loggedUserLocationIds = locations?.map((location) => {
     return location.id;
   });
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 const SavedLocations = ({
@@ -7,12 +7,16 @@ const SavedLocations = ({
   setLocations,
   isProfileLoggedUser,
   members,
+  user,
+  saveLocationMsg,
+  setSaveLocationMsg,
 }) => {
   const { handle, savedLocations } = userInfo;
   const savedLocationsCount = locations?.length;
-  console.log("locations:", locations);
+  const [isLocationSaved, setLocationIsSaved] = useState(false);
 
   const handleRemoveSavedLocation = async (e) => {
+    e.stopPropagation();
     e.preventDefault();
     const deletedLocationId = e.target.value;
 
@@ -52,9 +56,9 @@ const SavedLocations = ({
       });
   };
 
-  const handleSearch = (ev) => {
-    ev.preventDefault();
-    const value = ev.target.value.toLowerCase();
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const value = e.target.value.toLowerCase();
 
     const searchKeys = value.split(" ").filter((searchKey) => {
       return searchKey !== "";
@@ -73,6 +77,43 @@ const SavedLocations = ({
       : setLocations(filteredSavedLocations);
   };
 
+  const handleSaveLocation = async (e, location) => {
+    e.stopPropagation();
+    e.preventDefault();
+    const { id, name, address, rating } = location;
+
+    if (!user) {
+      alert("User must log in to save location!");
+      return;
+    }
+
+    const response = await fetch("/save-location", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: user.email.toLowerCase(),
+        handle: user.nickname,
+        id,
+        name,
+        address,
+        rating,
+      }),
+    });
+
+    setLocationIsSaved(true);
+
+    const data = await response.json();
+    const locationSaved = data.data;
+
+    if (!locationSaved) {
+      setSaveLocationMsg(data.message);
+    } else {
+      setSaveLocationMsg(data.message);
+    }
+  };
+
   return (
     <Wrapper>
       <h1>Saved Locations ({savedLocationsCount})</h1>
@@ -81,6 +122,7 @@ const SavedLocations = ({
         placeholder="Search restaurant or address"
         onChange={handleSearch}
       />
+      {isLocationSaved && saveLocationMsg}
       <hr />
       {locations?.map((location, index) => (
         <Location
@@ -89,13 +131,17 @@ const SavedLocations = ({
             handleSavePostalCode(e, location);
           }}
         >
-          {isProfileLoggedUser && (
+          {isProfileLoggedUser ? (
             <StyledButton
               value={location.id}
               onClick={handleRemoveSavedLocation}
             >
               X
             </StyledButton>
+          ) : (
+            <SaveButton onClick={(e) => handleSaveLocation(e, location)}>
+              Save
+            </SaveButton>
           )}
           <div>
             {location.name} ({location.rating}/5)
@@ -165,6 +211,23 @@ const StyledButton = styled.button`
 
   :hover {
     cursor: pointer;
+  }
+`;
+
+const SaveButton = styled.button`
+  position: absolute;
+  right: 10px;
+  font-size: 14px;
+  background: var(--blue);
+  color: white;
+  border: none;
+  outline: none;
+  padding: 5px 8px;
+  border-radius: 10px;
+  cursor: pointer;
+
+  :hover {
+    background: lightblue;
   }
 `;
 
