@@ -8,8 +8,9 @@ const SavedLocations = ({
   isProfileLoggedUser,
   members,
 }) => {
-  const { handle } = userInfo;
+  const { handle, savedLocations } = userInfo;
   const savedLocationsCount = locations?.length;
+  console.log("locations:", locations);
 
   const handleRemoveSavedLocation = async (e) => {
     e.preventDefault();
@@ -51,9 +52,35 @@ const SavedLocations = ({
       });
   };
 
+  const handleSearch = (ev) => {
+    ev.preventDefault();
+    const value = ev.target.value.toLowerCase();
+
+    const searchKeys = value.split(" ").filter((searchKey) => {
+      return searchKey !== "";
+    });
+
+    const filteredSavedLocations = locations.filter((location) => {
+      return searchKeys.every((searchKey) => {
+        return (
+          location.name.toLowerCase().includes(searchKey) ||
+          location.address.toLowerCase().includes(searchKey)
+        );
+      });
+    });
+    value === ""
+      ? setLocations(savedLocations)
+      : setLocations(filteredSavedLocations);
+  };
+
   return (
     <Wrapper>
       <h1>Saved Locations ({savedLocationsCount})</h1>
+      <StyledInput
+        type="search"
+        placeholder="Search restaurant or address"
+        onChange={handleSearch}
+      />
       <hr />
       {locations?.map((location, index) => (
         <Location
@@ -97,6 +124,10 @@ const Wrapper = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   gap: 1rem;
+`;
+
+const StyledInput = styled.input`
+  width: 200px;
 `;
 
 const Location = styled.div`

@@ -3,6 +3,7 @@ import getPhotos from "../../api/getPhotos";
 import getRandomQuote from "../../api/getRandomQuote";
 import getRamenFacts from "../../api/getRamenFacts";
 import styled, { keyframes } from "styled-components";
+import { revealSection } from "./utils";
 
 const Inspo = () => {
   const [ramenPhotos, setRamenPhotos] = useState();
@@ -14,21 +15,6 @@ const Inspo = () => {
   );
 
   const randomizedRamenFacts = ramenFacts?.sort(() => 0.5 - Math.random());
-
-  const revealSection = () => {
-    const fadeInSection = document.getElementsByClassName("fade-in");
-
-    for (let i = 0; i < fadeInSection.length; i++) {
-      let windowHeight = window.innerHeight;
-      let sectionTop = fadeInSection[i].getBoundingClientRect().top;
-
-      if (sectionTop < windowHeight) {
-        fadeInSection[i].classList.add("active");
-      } else {
-        fadeInSection[i].classList.remove("active");
-      }
-    }
-  };
 
   window.addEventListener("scroll", revealSection);
   revealSection();

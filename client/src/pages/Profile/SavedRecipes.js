@@ -9,7 +9,7 @@ const SavedRecipes = ({
   setRecipes,
   isProfileLoggedUser,
 }) => {
-  const { handle } = userInfo;
+  const { handle, savedRecipes } = userInfo;
   const savedRecipesCount = recipes?.length;
 
   const handleRemoveSavedRecipe = async (e) => {
@@ -31,15 +31,33 @@ const SavedRecipes = ({
     setRecipes(recipes.filter((recipe) => recipe.recipeId !== deletedRecipeId));
   };
 
+  const handleSearch = (ev) => {
+    ev.preventDefault();
+    const value = ev.target.value.toLowerCase();
+
+    const searchKeys = value.split(" ").filter((searchKey) => {
+      return searchKey !== "";
+    });
+
+    const filteredSavedRecipes = recipes.filter((recipe) => {
+      return searchKeys.every((searchKey) => {
+        return recipe.name.toLowerCase().includes(searchKey);
+      });
+    });
+    value === "" ? setRecipes(savedRecipes) : setRecipes(filteredSavedRecipes);
+  };
+
   return (
     <Wrapper>
-      <h1>Saved Recipes ({savedRecipesCount})</h1>
+      <h1>Saved Recipes ({savedRecipesCount})</h1>{" "}
+      <StyledInput
+        type="search"
+        placeholder="Search recipe name"
+        onChange={handleSearch}
+      />
       <hr />
-      {recipes?.map((recipe, index) => (
-        <StyledLink
-          to={`/recipe/${recipe.recipeId}`}
-          key={`${recipe}-${index}`}
-        >
+      {recipes?.map((recipe) => (
+        <StyledLink to={`/recipe/${recipe.recipeId}`} key={recipe.recipeId}>
           <Recipe>
             {isProfileLoggedUser && (
               <StyledButton
@@ -53,9 +71,9 @@ const SavedRecipes = ({
             <RecipeName>{recipe.name}</RecipeName>
 
             {members?.map((member) =>
-              member.savedRecipes.map((memberSavedRecipe, index) => {
+              member.savedRecipes.map((memberSavedRecipe) => {
                 return memberSavedRecipe.recipeId === recipe.recipeId ? (
-                  <ActivityText key={`${memberSavedRecipe.recipeId}-${index}`}>
+                  <ActivityText key={memberSavedRecipe.recipeId}>
                     🤩 @{member.handle} saved this!
                   </ActivityText>
                 ) : (
@@ -75,6 +93,10 @@ const Wrapper = styled.div`
   flex-wrap: wrap;
   gap: 1.25rem;
   justify-content: center;
+`;
+
+const StyledInput = styled.input`
+  width: 200px;
 `;
 
 const StyledLink = styled(Link)`
