@@ -83,7 +83,7 @@ Json files related to Tasty.co recipes and ramen facts are found in the `server/
 4. Auth0 React SDK for Single Page Apps (for user login/registration) 
 - https://auth0.com/docs/libraries/auth0-react
 
-5. Auth0 integration with MongoDB (update MongoDB user collection whenever a new user registers/signs in via Auth0)
+5. Auth0 + MongoDB integration (update MongoDB user collection whenever a new user registers/signs in)
 - https://auth0.com/blog/connecting-auth0-to-mongodb/
 - https://auth0.com/docs/customize/actions/flows-and-triggers/login-flow
 
